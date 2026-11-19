@@ -1,0 +1,661 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>LQHF · Saison</title>
+<meta name="description" content="Classements, calendrier, résultats, statistiques et prédictions de la saison LQHF (M12, M15). Site non officiel.">
+<link rel="icon" href="logos/icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,600;0,700;0,800;1,700;1,800&family=Barlow:wght@400;500;600;700&display=swap">
+<style>
+/* Palette from the LQHF crest: deep navy, sky blue, a touch of pink. */
+:root{
+  --bg:#f2f4f9;--surface:#fff;--ink:#141233;--muted:#5a5f7d;--line:#d9dcea;--soft:#e6f1fa;
+  --accent:#1c6a9e;--sky:#3e98ca;--pink:#c2407f;--navy:#201943;--win:#1d7a4d;--loss:#b3261e;--tie:#6b6f86;--warn:#9a5a00;
+  --display:'Barlow Condensed','Arial Narrow',sans-serif;--body:'Barlow',system-ui,sans-serif;color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b0a1c;--surface:#15132d;--ink:#eceaf7;--muted:#a09fbd;--line:#29274d;--soft:#18284a;
+  --accent:#72c3ef;--sky:#3e98ca;--pink:#f08cc0;--win:#53c78f;--loss:#ff8a80;--tie:#a5a8bf;--warn:#f0a548;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#0b0a1c;--surface:#15132d;--ink:#eceaf7;--muted:#a09fbd;--line:#29274d;--soft:#18284a;
+  --accent:#72c3ef;--sky:#3e98ca;--pink:#f08cc0;--win:#53c78f;--loss:#ff8a80;--tie:#a5a8bf;--warn:#f0a548;color-scheme:dark}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 var(--body);padding-bottom:env(safe-area-inset-bottom,0px)}
+img{max-width:100%}[hidden]{display:none!important}
+a{color:var(--accent);text-underline-offset:2px;text-decoration-thickness:1px}
+a:focus-visible,button:focus-visible,select:focus-visible,input:focus-visible{outline:2px solid var(--sky);outline-offset:2px}
+.wrap{max-width:1120px;margin:0 auto;padding-inline:max(16px,env(safe-area-inset-left,0px)) max(16px,env(safe-area-inset-right,0px))}
+.muted{color:var(--muted)}
+.num{font-variant-numeric:tabular-nums}
+/* masthead */
+.mast{background:var(--navy);color:#fff;position:relative;overflow:hidden;padding-top:env(safe-area-inset-top,0px)}
+.mast:after{content:"";position:absolute;left:0;right:0;bottom:0;height:5px;background:linear-gradient(90deg,var(--sky) 0 70%,#e46fb0 70% 100%)}
+.mast .wrap{display:flex;align-items:center;gap:18px;padding-block:18px 22px;flex-wrap:wrap}
+.crest{flex:none;display:block}
+.crest img{display:block;height:84px;width:auto}
+.mt{flex:1 1 260px;min-width:0}
+.eyebrow{font:700 12px var(--display);letter-spacing:.16em;text-transform:uppercase;color:#8fd0f5}
+.mast h1{margin:2px 0 0;font:800 italic clamp(28px,5vw,44px)/1 var(--display);text-transform:uppercase;letter-spacing:.01em}
+.pills{display:flex;flex-wrap:wrap;gap:6px;margin-top:12px}
+.pills a{font:800 italic 15px var(--display);letter-spacing:.05em;text-transform:uppercase;color:#fff;text-decoration:none;border:1.5px solid #3e98ca;padding:4px 13px;border-radius:99px}
+.pills a[aria-current="page"]{background:var(--sky);border-color:var(--sky);color:var(--navy)}
+.pills a:hover{background:rgba(62,152,202,.25)}
+.tools{display:flex;gap:6px;align-self:flex-start}
+.tools button{font:700 13px var(--display);letter-spacing:.1em;text-transform:uppercase;background:transparent;color:#cfe9f9;border:1px solid rgba(255,255,255,.3);border-radius:4px;padding:5px 10px;cursor:pointer}
+/* tabs */
+nav.tabs{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line)}
+nav.tabs .wrap{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none}
+nav.tabs a{font:700 16px var(--display);text-transform:uppercase;letter-spacing:.05em;color:var(--muted);text-decoration:none;padding:12px 12px 10px;border-bottom:3px solid transparent;white-space:nowrap}
+nav.tabs a[aria-current="page"]{color:var(--ink);border-color:var(--sky)}
+nav.tabs a:hover{color:var(--ink)}
+main{padding-block:24px 40px;min-height:50vh}
+h2{font:800 italic 26px/1.1 var(--display);text-transform:uppercase;margin:32px 0 12px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+main>h2:first-child,.first{margin-top:0}
+h2 small{font:500 14px var(--body);text-transform:none;color:var(--muted)}
+h3{font:700 14px var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0 0 8px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:6px}
+.pad{padding:14px 16px}
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:18px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:12px}
+.grid2>*,.grid3>*{min-width:0}
+.note{font-size:13px;color:var(--muted);margin:10px 2px 0}
+.scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+/* filters */
+.filters{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 14px}
+select,input[type=search]{font:500 15px var(--body);color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:5px;padding:8px 10px;max-width:100%}
+input[type=search]{width:100%}
+.seg{display:inline-flex;border:1px solid var(--line);border-radius:6px;overflow:hidden;background:var(--surface);flex-wrap:wrap}
+.seg a,.seg button{font:700 14px var(--display);letter-spacing:.06em;text-transform:uppercase;padding:7px 13px;color:var(--muted);text-decoration:none;background:none;border:0;cursor:pointer}
+.seg [aria-current="true"],.seg [aria-pressed="true"]{background:var(--navy);color:#fff}
+:root[data-theme="dark"] .seg [aria-pressed="true"],:root[data-theme="dark"] .seg [aria-current="true"]{background:var(--sky);color:var(--navy)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .seg [aria-pressed="true"],:root:not([data-theme="light"]) .seg [aria-current="true"]{background:var(--sky);color:var(--navy)}}
+.btn{font:700 14px var(--display);letter-spacing:.06em;text-transform:uppercase;padding:8px 14px;border-radius:5px;border:1px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.btn.on{background:#e46fb0;border-color:#e46fb0;color:#fff}
+.more{display:block;margin:12px auto 0}
+/* logos */
+.lg{display:inline-block;vertical-align:middle;object-fit:contain;flex:none;border-radius:4px}
+.lg.ph{background:var(--soft);color:var(--accent);font:800 11px/1 var(--display);display:inline-flex;align-items:center;justify-content:center}
+.tl{display:inline-flex;align-items:center;gap:8px;min-width:0}
+.tl span{overflow-wrap:anywhere}
+a.tl{color:inherit;text-decoration:none}
+a.tl:hover span{text-decoration:underline}
+/* game rows */
+.day{font:700 13px var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:14px 2px 6px}
+.day:first-child{padding-top:0}
+.gl{list-style:none;margin:0;padding:0}
+.gr{display:grid;grid-template-columns:66px minmax(0,1fr) auto;gap:12px;align-items:center;padding:10px 14px;border-top:1px solid var(--line);color:var(--ink);text-decoration:none}
+.gl li:first-child .gr{border-top:0}
+.gr:hover{background:var(--soft)}
+.gr .tm{font:700 17px var(--display);font-variant-numeric:tabular-nums;line-height:1.1}
+.gr .tm small{display:block;font:500 12px var(--body);color:var(--muted);margin-top:2px}
+.gr .sides>div{display:flex;justify-content:space-between;align-items:center;gap:10px;font-weight:600;min-height:26px}
+.gr .sides .ph{color:var(--muted);font-weight:500;font-style:italic}
+.gr .sc{font:800 italic 20px var(--display);font-variant-numeric:tabular-nums;min-width:18px;text-align:right}
+.gr .w{color:var(--accent)}
+.gr .me{background:linear-gradient(90deg,var(--soft),transparent);margin-inline:-6px;padding-inline:6px;border-radius:3px}
+.chip{font:700 11px var(--display);letter-spacing:.1em;text-transform:uppercase;padding:3px 8px;border-radius:3px;background:var(--soft);color:var(--muted);white-space:nowrap;display:inline-block}
+.chip.final{background:var(--navy);color:#fff}
+.chip.live{background:#c62828;color:#fff}
+.chip.W{background:var(--win);color:#fff}.chip.L{background:var(--loss);color:#fff}.chip.T{background:var(--tie);color:#fff}
+.chip.T_{background:#fde4f1;color:#8a1f55}
+.chip.X{background:transparent;border:1px solid var(--line)}
+.chip.off{background:transparent;color:var(--warn);border:1px solid currentColor}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .chip.final{background:#2d3a66}:root:not([data-theme="light"]) .chip.T_{background:#4a1f37;color:#ffc1e1}}
+:root[data-theme="dark"] .chip.final{background:#2d3a66}:root[data-theme="dark"] .chip.T_{background:#4a1f37;color:#ffc1e1}
+@media(max-width:460px){.gr{grid-template-columns:54px minmax(0,1fr) auto;gap:8px;padding-inline:10px}.gr .chip{font-size:10px;padding:2px 5px}}
+/* tables */
+table{border-collapse:collapse;width:100%;font-variant-numeric:tabular-nums}
+th,td{padding:8px 10px;text-align:right;white-space:nowrap}
+th{font:700 12px var(--display);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);background:var(--soft);border-bottom:1px solid var(--line);position:sticky;top:0}
+td{border-top:1px solid var(--line)}
+tbody tr:first-child td{border-top:0}
+th.l,td.l{text-align:left}
+td.tn{white-space:normal;min-width:180px}
+th button{all:unset;cursor:pointer}
+th button[aria-pressed="true"]{color:var(--ink);text-decoration:underline;text-underline-offset:3px}
+tr.me td{background:var(--soft)}
+td b{font-weight:700}
+.rk{color:var(--muted);width:28px}
+.pts{font-weight:700}
+.aff{font:700 10px var(--display);letter-spacing:.08em;color:#8a1f55;background:#fde4f1;border-radius:3px;padding:1px 5px;margin-left:6px;vertical-align:1px}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .aff{background:#4a1f37;color:#ffc1e1}}
+:root[data-theme="dark"] .aff{background:#4a1f37;color:#ffc1e1}
+.form{display:inline-flex;gap:3px}
+.form i{font:700 11px/18px var(--display);width:18px;height:18px;text-align:center;border-radius:3px;color:#fff;font-style:normal}
+.form .W{background:var(--win)}.form .L{background:var(--loss)}.form .T{background:var(--tie)}
+.cut td{border-top:2px solid var(--sky)}
+/* league cards */
+.lc{display:block;text-decoration:none;color:var(--ink);padding:16px;border-top:4px solid var(--sky)}
+.lc:hover{border-color:var(--line);border-top-color:#e46fb0}
+.lc b{font:800 italic 30px/1 var(--display);text-transform:uppercase;display:block}
+.lc span{color:var(--muted);font-size:13px}
+.prog{height:5px;background:var(--soft);border-radius:3px;margin-top:10px;overflow:hidden}
+.prog i{display:block;height:100%;background:var(--sky)}
+/* team header */
+.th{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.th .lg{width:72px;height:72px}
+.th h2{margin:0}
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:6px;overflow:hidden;margin-top:16px}
+.kpi{background:var(--surface);padding:10px 12px}
+.kpi b{display:block;font:800 italic 26px/1.05 var(--display);font-variant-numeric:tabular-nums}
+.kpi span{font:600 11px var(--display);letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+/* game page */
+.board{padding:18px 16px;text-align:center}
+.board .meta{font:700 12px var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.vs{display:grid;grid-template-columns:1fr auto 1fr;gap:12px;align-items:center;margin-top:14px}
+.vs .side{display:flex;flex-direction:column;align-items:center;gap:8px;font-weight:700;min-width:0;overflow-wrap:anywhere}
+.vs .side a{color:inherit}
+.vs .lg{width:60px;height:60px}
+.vs .big{font:800 italic clamp(40px,9vw,64px)/1 var(--display);font-variant-numeric:tabular-nums;white-space:nowrap}
+.vs .big.tbd{font-size:24px;color:var(--muted)}
+.facts{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 18px;margin-top:14px;font-size:14px;color:var(--muted)}
+.odds .ob{display:flex;height:12px;border-radius:6px;overflow:hidden;background:var(--soft)}
+.odds .ob i{display:block;height:100%}
+.odds .oh{background:var(--sky)}.odds .ot{background:var(--tie);opacity:.55}.odds .ov{background:#e46fb0}
+.odds .ol{display:flex;justify-content:space-between;gap:10px;margin-top:6px;font-size:13px;flex-wrap:wrap}
+.pg{display:grid;grid-template-columns:auto minmax(0,1fr);gap:10px 14px;align-items:baseline;margin:0}
+.ev{list-style:none;margin:0;padding:0}
+.ev li{display:grid;grid-template-columns:48px 26px minmax(0,1fr);gap:8px;align-items:center;padding:7px 14px;border-top:1px solid var(--line)}
+.ev li.per{display:block;border-top:0;font:700 12px var(--display);letter-spacing:.12em;text-transform:uppercase;color:var(--muted);background:var(--soft);padding:6px 14px}
+.ev .tm{font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px}
+.ev small{color:var(--muted)}
+.bar{display:inline-block;height:8px;border-radius:4px;vertical-align:middle;background:var(--sky)}
+.bar.neg{background:#e46fb0}
+.err{color:var(--loss)}
+.res{display:flex;flex-direction:column}
+.res a{display:flex;align-items:center;gap:10px;padding:9px 14px;border-top:1px solid var(--line);color:var(--ink);text-decoration:none}
+.res a:first-child{border-top:0}
+.res a:hover{background:var(--soft)}
+.res small{color:var(--muted);margin-left:auto;text-align:right}
+footer{color:var(--muted);font-size:13px;padding-block:20px 40px;border-top:1px solid var(--line)}
+footer p{margin:4px 0}
+.crumb{font:700 13px var(--display);letter-spacing:.1em;text-transform:uppercase;margin-bottom:10px}
+.crumb a{text-decoration:none}
+.empty{padding:16px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="mast"><div class="wrap">
+  <a class="crest" href="#/"><img src="logos/lqhf.png" alt="LQHF" width="94" height="84"></a>
+  <div class="mt"><div class="eyebrow" id="eyebrow"></div><h1 id="title"></h1><div class="pills" id="pills"></div></div>
+  <div class="tools"><button id="lang" type="button"></button></div>
+</div></header>
+<nav class="tabs" id="tabs" aria-label="Sections"><div class="wrap" id="tabsw"></div></nav>
+<main class="wrap" id="app" tabindex="-1"></main>
+<footer class="wrap" id="foot"></footer>
+<script>
+'use strict';
+const IX={"season":"2026-2027","crest":"lqhf","leagues":[{"key":"m12b","label":"M12 B","teams":56,"played":181,"total":610,"v":"37b6e2500c"},{"key":"m12a","label":"M12 A","teams":36,"played":131,"total":404,"v":"8d5cc729a6"},{"key":"m12aa","label":"M12 AA","teams":12,"played":58,"total":144,"v":"499b227be8"},{"key":"m15b","label":"M15 B","teams":45,"played":159,"total":495,"v":"d50b52f4c9"},{"key":"m15a","label":"M15 A","teams":27,"played":87,"total":295,"v":"5127549a18"}],"teams":{"9faa9065":["m12b","BANSHEES ROUGE M.R.O.","569e29864cdf","AHM MONT-ROYAL / OUTREMONT"],"527a154a":["m12b","MISTRAL B3 LAURENTIDES NORD - M12","c3efef36a287","AHM HOCKEY FÉMININ LAURENTIDES"],"70a025f1":["m12b","BLUE BLADES D.D.O.","57f3a38db122","DOLLARD HOCKEY ASSOCIATION"],"da99bc38":["m12b","STORM GRIS SUD OUEST","8cfc94440aca","AHM FÉMININ DU SUD-OUEST"],"34bf5d5c":["m12b","VALKYRIES FÉMININ LAVAL","cb4fe693afdd","AHM HOCKEY FEMININ LAVAL"],"0779765e":["m12b","MISTRAL B5 LAURENTIDES NORD - M12","c3efef36a287","AHM HOCKEY FÉMININ LAURENTIDES"],"6b50559a":["m12b","PIONNIÈRES 1 LANAUDIÈRE","cf093b042b08","AHM HOCKEY MINEUR FÉMININ LANAUDIÈRE"],"cf101e28":["m12b","PUMAS RICHELIEU","5b9a68994f6d","MHA FÉMININ RICHELIEU"],"af67fc3a":["m12b","MYSTIQUES FÉMININ LAVAL","cb4fe693afdd","AHM HOCKEY FEMININ LAVAL"],"941d9ae0":["m12b","LIONNES ST-LEONARD","cd90837504d0","REGROUPEMENT DE LA ZONE CENTRE DE MONTRÉAL"],"c64d8073":["m12b","LA FORCE BLACK ST-LAURENT","653844b6f32a","AHM SAINT-LAURENT"],"ee4b1ea8":["m12b","HUSKY FÉMININ #2","025ee01bdc56","AHM HOCKEY LEVIS - HUSKY FÉMININ"],"9b73ce8e":["m12b","RAFALES VILLERAY","60337ede7481","REGROUPEMENT DE LA ZONE CENTRE DE MONTRÉAL"],"134ccb7a":["m12b","HARFANGS DE MONTRÉAL-CENTRE","601848f87c13","REGROUPEMENT DE LA ZONE CENTRE DE MONTRÉAL"],"240e8059":["m12b","PRÉDATRICES DU RICHELIEU","807eab82808f","MHA FÉMININ RICHELIEU"],"25815277":["m12b","CITADELLES BLANCHES QUÉBEC-CENTRE","a2a667553c84","AHM QUÉBEC-CENTRE - SLQNE"],"1054f86c":["m12b","WINGS WESTLAKE","b07a8002cb30","AHM WESTLAKE"],"cf0d0c81":["m12b","LA FORCE ORANGE ST-LAURENT","653844b6f32a","AHM SAINT-LAURENT"],"cb41229d":["m12b","STORM BLEU SUD OUEST","8cfc94440aca","AHM FÉMININ DU SUD-OUEST"],"d1295340":["m12b","MISTRAL B4 LAURENTIDES SUD - M12","c3efef36a287","AHM HOCKEY FÉMININ LAURENTIDES"],"8c84fe03":["m12b","PIONNIÈRES 3 LANAUDIÈRE","cf093b042b08","AHM HOCKEY MINEUR FÉMININ LANAUDIÈRE"],"b414b989":["m12b","VOLTIGEURS DE DRUMMONDVILLE","f0a3a51a8f69","AHM DRUMMONDVILLE"],"3f29059f":["m12b","MISTRAL B2 LAURENTIDES SUD - M12","c3efef36a287","AHM HOCKEY FÉMININ LAURENTIDES"],"c14d1a35":["m12b","TIGRES FÉMININ","6bdaebd0d663","AHM VICTORIAVILLE"],"8dd0abd0":["m12b","SPHYNX DU RICHELIEU","40e521af89d3","MHA FÉMININ RICHELIEU"],"266aaa1c":["m12b","TITANES FÉMININ LAVAL","cb4fe693afdd","AHM HOCKEY FEMININ LAVAL"],"0762b4b4":["m12b","PATRIOTES UQTR 2","03a997fb29b9","AHM TROIS-RIVIÈRES (FÉMININ)"],"0ad07b70":["m12b","FÉLINES RICHELIEU","0917bfd82a5f","MHA FÉMININ RICHELIEU"],"7e640104":["m12b","BANSHEES BLANC M.R.O.","569e29864cdf","AHM MONT-ROYAL / OUTREMONT"],"05642ed2":["m12b","PIONNIÈRES 2 LANAUDIÈRE","cf093b042b08","AHM HOCKEY MINEUR FÉMININ LANAUDIÈRE"],"804c782d":["m12b","MISTRAL B1 LAURENTIDES NORD - M12","c3efef36a287","AHM HOCKEY FÉMININ LAURENTIDES"],"4d37df67":["m12b","FAUVES DU RICHELIEU","252a2adf13c3","MHA FÉMININ RICHELIEU"],"05e4fa2a":["m12b","CAVALIÈRES HMRPP","7933da3c96b1","REGROUPEMENT DE LA ZONE CENTRE DE MONTRÉAL"],"e6ee51b3":["m12b","LOUVES VERDUN","0b138f2c42ea","AHM VERDUN"],"401e9305":["m12b","GOLD BLADES D.D.O.","f625e66da606","DOLLARD HOCKEY ASSOCIATION"],"ef0f5acc":["m12b","HSO ATTACK","9a8718b5b94a","MHA SUD-OUEST"],"3debf314":["m12b","WOLVES WESTLUC ALLIANCE","f95668bf948e","REGROUPEMENT WESTLUC ALLIANCE"],"3c4b8f4a":["m12b","CITADELLES JAUNES QUÉBEC-CENTRE","fb2e67fda826","AHM QUÉBEC-CENTRE - SLQNE"],"7c52d634":["m12b","WILD WESTLAKE","1d66efa0223c","AHM WESTLAKE"],"bdadf365":["m12b","CITADELLES BLEUES QUÉBEC-CENTRE","36a5cb20e1d0","AHM QUÉBEC-CENTRE - SLQNE"],"5c4a0d9f":["m12b","PIONNIÈRES 4 LANAUDIÈRE","cf093b042b08","AHM HOCKEY MINEUR FÉMININ LANAUDIÈRE"],"225ee5b4":["m12b","GRIFFINS N.D.G.","e75fe2b71b02","AHM NOTRE-DAME DE GRACES"],"29903a5f":["m12b","ROCKETTES SUROIT","af917c7cd148","AHM FÉMININ DU SUROÎT"],"fbb6932b":["m12b","LOUVES DU RICHELIEU","1dd790247152","MHA FÉMININ RICHELIEU"],"89b79e8f":["m12b","PANTHÈRES RICHELIEU","d93dc3c8fa07","MHA FÉMININ RICHELIEU"],"9810b0f4":["m12b","HUSKY FÉMININ #1","025ee01bdc56","AHM HOCKEY LEVIS - HUSKY FÉMININ"],"7d499120":["m12b","PATRIOTES UQTR 1","03a997fb29b9","AHM TROIS-RIVIÈRES (FÉMININ)"],"7be971a7":["m12b","LIONNES RICHELIEU","f48a65b221a9","MHA FÉMININ RICHELIEU"],"af707550":["m12b","TIGRES LASALLE","350ebf9bafe3","AHM COUGUARS DE LASALLE"],"70ad724c":["m12b","Stars de Yamaska-Missisquoi","faa500d9fb7a","REGROUPEMENT FÉMININ - YAMASKA"],"bd5f97bd":["m12b","PHOENIX SHERBROOKE FEM 1","39a3a456c500","AHM HOCKEY SHERBROOKE"],"81e587ae":["m12b","BRAVES DU NORD","69d7cd091778","REGROUPEMENT BRAVES DU NORD DE MONTRÉAL"],"3350c8b8":["m12b","LYNX DU RICHELIEU","718941013b28","MHA FÉMININ RICHELIEU"],"776e0d99":["m12b","LÉGENDES FÉMININ LAVAL","cb4fe693afdd","AHM HOCKEY FEMININ LAVAL"],"fd7d184a":["m12b","PHOENIX SHERBROOKE FEM 2","39a3a456c500","AHM HOCKEY SHERBROOKE"],"3bb4f6b7":["m12a","HUSKY FÉMININ #1","83f73a7a9f94","AHM HOCKEY LEVIS - HUSKY FÉMININ"],"262f77e4":["m12a","MISTRAL A1 LAURENTIDES - M12","c3efef36a287","AHM HOCKEY FÉMININ LAURENTIDES"],"9083d694":["m12a","MISTRAL A3 LAURENTIDES - M12","c3efef36a287","AHM HOCKEY FÉMININ LAURENTIDES"],"b22e37b2":["m12a","ÉCLIPSES FÉMININ LAVAL","cb4fe693afdd","AHM HOCKEY FEMININ LAVAL"],"a0385cbd":["m12a","BOMBARDIER DE VALCOURT","33fbfe03c2e3","AHM VALCOURT"],"e2d47ba8":["m12a","STORM HUNTINGDON SUD OUEST","8cfc94440aca","AHM FÉMININ DU SUD-OUEST"],"108a5582":["m12a","CAVALIÈRES HMRPP","4ee24d8cedc7","REGROUPEMENT DE LA ZONE CENTRE DE MONTRÉAL"],"09c7de55":["m12a","PIONNIÈRES 2 LANAUDIÈRE","cf093b042b08","AHM HOCKEY MINEUR FÉMININ LANAUDIÈRE"],"bca16c5d":["m12a","PUMAS RICHELIEU","b13b2b3e07a9","MHA FÉMININ RICHELIEU"],"184c1a3e":["m12a","MOHAWKS KAHNAWAKE","7b92d1b53f2a","KAHNAWAKE MINOR HOCKEY ASSOCIATION"],"8adcaea2":["m12a","VOLTIGEURS DE DRUMMONDVILLE","f0a3a51a8f69","AHM DRUMMONDVILLE"],"251b2720":["m12a","AVALANCHES FÉMININ LAVAL","cb4fe693afdd","AHM HOCKEY FEMININ LAVAL"],"da2bfc9b":["m12a","PIONNIÈRES 3 LANAUDIÈRE","cf093b042b08","AHM HOCKEY MINEUR FÉMININ LANAUDIÈRE"],"cfcef039":["m12a","WILD WESTLAKE","b07a8002cb30","AHM WESTLAKE"],"bcfa9255":["m12a","PATRIOTES UQTR","03a997fb29b9","AHM TROIS-RIVIÈRES (FÉMININ)"],"3064c604":["m12a","PIONNIÈRES 1 LANAUDIÈRE","cf093b042b08","AHM HOCKEY MINEUR FÉMININ LANAUDIÈRE"],"0a6c2cdb":["m12a","ROCKETTES SUROIT","af917c7cd148","AHM FÉMININ DU SUROÎT"],"879c7b0d":["m12a","BLADES D.D.O.","57f3a38db122","DOLLARD HOCKEY ASSOCIATION"],"4d4db932":["m12a","BANSHEES M.R.O.","569e29864cdf","AHM MONT-ROYAL / OUTREMONT"],"a5f14bf2":["m12a","HUSKY FÉMININ #2","83f73a7a9f94","AHM HOCKEY LEVIS - HUSKY FÉMININ"],"cf74b638":["m12a","MISTRAL A2 LAURENTIDES - M12","c3efef36a287","AHM HOCKEY FÉMININ LAURENTIDES"],"53294371":["m12a","LIONNES RICHELIEU","fe3c4014281e","MHA FÉMININ RICHELIEU"],"f7f3c5b1":["m12a","TIGRES CENTRE-DU-QUÉBEC","f086429aed95","REGROUPEMENT FÉMININ - CENTRE DU QUÉBEC"],"948b68fc":["m12a","PHOENIX SHERBROOKE FEM","39a3a456c500","AHM HOCKEY SHERBROOKE"],"6a9902f9":["m12a","GRIFFINS N.D.G.","e75fe2b71b02","AHM NOTRE-DAME DE GRACES"],"c2ab3152":["m12a","FÉLINES DU RICHELIEU","a30118ca390f","MHA FÉMININ RICHELIEU"],"69608cb7":["m12a","LYNX DU RICHELIEU","f13c33bab62a","MHA FÉMININ RICHELIEU"],"46bcc8c7":["m12a","STORM BLEU SUD OUEST","8cfc94440aca","AHM FÉMININ DU SUD-OUEST"],"935662af":["m12a","SPHYNX DU RICHELIEU","c2b07e5d91ae","MHA FÉMININ RICHELIEU"],"b06e49ff":["m12a","LOUVES VERDUN","0b138f2c42ea","AHM VERDUN"],"ad320ee1":["m12a","PANTHÈRES DU RICHELIEU","f5c630f8e8cc","MHA FÉMININ RICHELIEU"],"bfd97088":["m12a","FAUVES RICHELIEU","719eaebd0669","MHA FÉMININ RICHELIEU"],"80b696f3":["m12a","STORM GRIS SUD OUEST","8cfc94440aca","AHM FÉMININ DU SUD-OUEST"],"a3ecdd25":["m12a","Stars de Yamaska-Missisquoi","9f23724a81b8","REGROUPEMENT FÉMININ - YAMASKA"],"9bee3716":["m12a","CITADELLES QUÉBEC-CENTRE","8e441d927ed5","AHM QUÉBEC-CENTRE - SLQNE"],"5736f2ce":["m12a","WOLVES WESTLUC ALLIANCE","3ef506e8050b","REGROUPEMENT WESTLUC ALLIANCE"],"f301ace8":["m12aa","REMPARTS OUEST RICHELIEU","b50541ff737c","MHA FÉMININ RICHELIEU"],"101819be":["m12aa","CITADELLES QUÉBEC-CENTRE","25ba9dcee416","AHM QUÉBEC-CENTRE - SLQNE"],"01908df7":["m12aa","WARRIORS BLUE LAC ST-LOUIS","c219b5e30f2a","FRANCHISE WARRIORS DU LAC ST-LOUIS"],"50b2020f":["m12aa","REBELLES FÉMININ LAVAL/MTL-2","ca3308abbd40","FRANCHISE AMAZONE AAA / REBELLES AA"],"5798c8a5":["m12aa","MISTRAL AA LAURENTIDES - M12","c3efef36a287","AHM HOCKEY FÉMININ LAURENTIDES"],"c4a88983":["m12aa","REBELLES FÉMININ LAVAL/MTL-1","0abcc9ea4135","FRANCHISE AMAZONE AAA / REBELLES AA"],"a7dd49d2":["m12aa","PHOENIX SHERBROOKE FEM","39a3a456c500","AHM HOCKEY SHERBROOKE"],"da6cd774":["m12aa","STORM SUD OUEST","8cfc94440aca","AHM FÉMININ DU SUD-OUEST"],"48c4b000":["m12aa","HUSKY FÉMININ","6a4b569f0508","AHM HOCKEY LEVIS - HUSKY FÉMININ"],"f7ae30ae":["m12aa","REMPARTS EST RICHELIEU","225003f70bbc","MHA FÉMININ RICHELIEU"],"5cb88a30":["m12aa","PIONNIÈRES LANAUDIÈRE","cf093b042b08","AHM HOCKEY MINEUR FÉMININ LANAUDIÈRE"],"0c8cc790":["m12aa","WARRIORS RED LAC ST-LOUIS","c219b5e30f2a","FRANCHISE WARRIORS DU LAC ST-LOUIS"],"be40d68c":["m15b","CITADELLES BLANCHES QUÉBEC-CENTRE","5f1a813d7e34","AHM QUÉBEC-CENTRE - SLQNE"],"9ca5f31d":["m15b","VALKYRIES FÉMININ LAVAL","cb4fe693afdd","AHM HOCKEY FEMININ LAVAL"],"5dd20b83":["m15b","PIONNIÈRES 2 LANAUDIÈRE","cf093b042b08","AHM HOCKEY MINEUR FÉMININ LANAUDIÈRE"],"278a9d50":["m15b","MISTRAL B2 LAURENTIDES SUD - M15","c3efef36a287","AHM HOCKEY FÉMININ LAURENTIDES"],"8b3daba4":["m15b","STORM HUNTINGDON SUD OUEST","8cfc94440aca","AHM FÉMININ DU SUD-OUEST"],"952e5f62":["m15b","TIGRES CENTRE-DU-QUÉBEC","77480a90aa8d","REGROUPEMENT FÉMININ - CENTRE DU QUÉBEC"],"dc8a5b90":["m15b","LÉGENDES FÉMININ LAVAL","cb4fe693afdd","AHM HOCKEY FEMININ LAVAL"],"65d880bd":["m15b","PIONNIÈRES 1 LANAUDIÈRE","cf093b042b08","AHM HOCKEY MINEUR FÉMININ LANAUDIÈRE"],"f3e0f06f":["m15b","M15 MISTRAL B5 LAURENTIDES SUD - M15","c3efef36a287","AHM HOCKEY FÉMININ LAURENTIDES"],"229fca61":["m15b","MYSTIQUES FÉMININ LAVAL","cb4fe693afdd","AHM HOCKEY FEMININ LAVAL"],"13383fec":["m15b","CITADELLES BLEUES QUÉBEC-CENTRE","0be4b7e2ca05","AHM QUÉBEC-CENTRE - SLQNE"],"7b378646":["m15b","FÉLINES RICHELIEU","41c4b5ddee97","MHA FÉMININ RICHELIEU"],"ae4b0311":["m15b","STORM BLANC SUD OUEST","8cfc94440aca","AHM FÉMININ DU SUD-OUEST"],"139609e1":["m15b","LIONNES RICHELIEU","92bf3860a476","MHA FÉMININ RICHELIEU"],"88b2103e":["m15b","PUMAS RICHELIEU","937ffe8d545d","MHA FÉMININ RICHELIEU"],"9b86e4fc":["m15b","Stars de Yamaska-Missisquoi","1cf58358c467","REGROUPEMENT FÉMININ - YAMASKA"],"54828a96":["m15b","PIONNIÈRES 4 LANAUDIÈRE","cf093b042b08","AHM HOCKEY MINEUR FÉMININ LANAUDIÈRE"],"337eacb8":["m15b","ROCKETTES 3 SUROIT","af917c7cd148","AHM FÉMININ DU SUROÎT"],"6906c267":["m15b","LA FORCE ST-LAURENT","653844b6f32a","AHM SAINT-LAURENT"],"dd632ce9":["m15b","CANADIENNES 1 DE MONTRÉAL-CENTRE","601848f87c13","REGROUPEMENT DE LA ZONE CENTRE DE MONTRÉAL"],"6a7a126f":["m15b","PATRIOTES UQTR","03a997fb29b9","AHM TROIS-RIVIÈRES (FÉMININ)"],"4de7389a":["m15b","STORM BLEU SUD OUEST","8cfc94440aca","AHM FÉMININ DU SUD-OUEST"],"3605cdfa":["m15b","CITADELLES JAUNES QUÉBEC-CENTRE","41f47e942371","AHM QUÉBEC-CENTRE - SLQNE"],"25171d0b":["m15b","WOLVES WESTLUC ALLIANCE","23da96340e54","REGROUPEMENT WESTLUC ALLIANCE"],"39fc911d":["m15b","MISTRAL B3 LAURENTIDES NORD - M15","c3efef36a287","AHM HOCKEY FÉMININ LAURENTIDES"],"031131e3":["m15b","MISTRAL B4 LAURENTIDES NORD - M15","c3efef36a287","AHM HOCKEY FÉMININ LAURENTIDES"],"4b79a9ff":["m15b","BLADES D.D.O.","57f3a38db122","DOLLARD HOCKEY ASSOCIATION"],"a0caf6b5":["m15b","PHOENIX SHERBROOKE FEM 1","39a3a456c500","AHM HOCKEY SHERBROOKE"],"35fb25eb":["m15b","VOLTIGEURS DE DRUMMONDVILLE","f0a3a51a8f69","AHM DRUMMONDVILLE"],"00f6b905":["m15b","MISTRAL B1 LAURENTIDES NORD - M15","c3efef36a287","AHM HOCKEY FÉMININ LAURENTIDES"],"72f235e6":["m15b","PANTHÈRES DU RICHELIEU","fb841ada0144","MHA FÉMININ RICHELIEU"],"54235ed6":["m15b","BANSHEES M.R.O.","569e29864cdf","AHM MONT-ROYAL / OUTREMONT"],"adbd9455":["m15b","SPHYNX DU RICHELIEU","af6daa7bfbcd","MHA FÉMININ RICHELIEU"],"246147ba":["m15b","ETOILES DE L'EST","c143581d1160","REGROUPEMENT DE LA ZONE EST"],"bfd16003":["m15b","STORM GRIS SUD OUEST","8cfc94440aca","AHM FÉMININ DU SUD-OUEST"],"7155ce4b":["m15b","CANADIENNES 2 DE MONTRÉAL-CENTRE","601848f87c13","REGROUPEMENT DE LA ZONE CENTRE DE MONTRÉAL"],"9669a6d0":["m15b","GRIFFINS N.D.G.","e75fe2b71b02","AHM NOTRE-DAME DE GRACES"],"2ca32ea1":["m15b","ROCKETTES 1 SUROIT","af917c7cd148","AHM FÉMININ DU SUROÎT"],"972b8f79":["m15b","PHOENIX SHERBROOKE FEM 2","39a3a456c500","AHM HOCKEY SHERBROOKE"],"8d8297c1":["m15b","PIONNIÈRES 3 LANAUDIÈRE","cf093b042b08","AHM HOCKEY MINEUR FÉMININ LANAUDIÈRE"],"b9dc5991":["m15b","ROCKETTES 2 SUROIT","af917c7cd148","AHM FÉMININ DU SUROÎT"],"8e0fadd3":["m15b","HUSKY FÉMININ #2","025ee01bdc56","AHM HOCKEY LEVIS - HUSKY FÉMININ"],"1af70246":["m15b","LYNX DU RICHELIEU","d657c49b086d","MHA FÉMININ RICHELIEU"],"1dac0cb1":["m15b","HUSKY FÉMININ #1","025ee01bdc56","AHM HOCKEY LEVIS - HUSKY FÉMININ"],"85d729b7":["m15b","REBELLES","7f3295088e36","MHA REGION SAGUENAY LAC ST-JEAN"],"656c4eec":["m15a","BANSHEES M.R.O.","569e29864cdf","AHM MONT-ROYAL / OUTREMONT"],"78f7c0ba":["m15a","WOLVES WESTLUC ALLIANCE","49eb460dc4fc","REGROUPEMENT WESTLUC ALLIANCE"],"7a2b6b02":["m15a","PHOENIX SHERBROOKE FEM","39a3a456c500","AHM HOCKEY SHERBROOKE"],"3e97dad9":["m15a","FÉLINES RICHELIEU","724e27f26bd3","MHA FÉMININ RICHELIEU"],"d06f71e0":["m15a","LYNX DU RICHELIEU","137ea88dfc85","MHA FÉMININ RICHELIEU"],"7c84f9aa":["m15a","TIGRES CENTRE-DU-QUÉBEC","f8248b864942","REGROUPEMENT FÉMININ - CENTRE DU QUÉBEC"],"8a51fd54":["m15a","CITADELLES QUÉBEC-CENTRE","f120ec0b2400","AHM QUÉBEC-CENTRE - SLQNE"],"24429635":["m15a","STORM BLEU SUD OUEST","8cfc94440aca","AHM FÉMININ DU SUD-OUEST"],"18a143d3":["m15a","PIONNIÈRES 2 LANAUDIÈRE","cf093b042b08","AHM HOCKEY MINEUR FÉMININ LANAUDIÈRE"],"b63fc736":["m15a","LIONNES RICHELIEU","892470a6c913","MHA FÉMININ RICHELIEU"],"42ad2072":["m15a","FAUVES DU RICHELIEU","c366149c1855","MHA FÉMININ RICHELIEU"],"5924c1dd":["m15a","PUMAS RICHELIEU","4619f273dc9f","MHA FÉMININ RICHELIEU"],"40b8ba7f":["m15a","SPHYNX DU RICHELIEU","ba7e0ae51d5d","MHA FÉMININ RICHELIEU"],"777a45f0":["m15a","WILD WESTLAKE","b07a8002cb30","AHM WESTLAKE"],"8cbf88cd":["m15a","GRIFFINS N.D.G.","e75fe2b71b02","AHM NOTRE-DAME DE GRACES"],"25280f45":["m15a","HUSKY FÉMININ #1","8a69403847b1","AHM HOCKEY LEVIS - HUSKY FÉMININ"],"0e79da3b":["m15a","AVALANCHES FÉMININ LAVAL","cb4fe693afdd","AHM HOCKEY FEMININ LAVAL"],"2a999537":["m15a","MISTRAL A3 LAURENTIDES - M15","c3efef36a287","AHM HOCKEY FÉMININ LAURENTIDES"],"a7f499eb":["m15a","MISTRAL A1 LAURENTIDES - M15","c3efef36a287","AHM HOCKEY FÉMININ LAURENTIDES"],"68db5935":["m15a","PATRIOTES UQTR","03a997fb29b9","AHM TROIS-RIVIÈRES (FÉMININ)"],"59597a0f":["m15a","STORM GRIS SUD OUEST","8cfc94440aca","AHM FÉMININ DU SUD-OUEST"],"41a3e897":["m15a","BLADES D.D.O.","57f3a38db122","DOLLARD HOCKEY ASSOCIATION"],"5919d4eb":["m15a","ROCKETTES SUROIT","af917c7cd148","AHM FÉMININ DU SUROÎT"],"65a4272b":["m15a","MISTRAL A2 LAURENTIDES - M15","c3efef36a287","AHM HOCKEY FÉMININ LAURENTIDES"],"359def8f":["m15a","CANADIENNES CENTRE MONTRÉAL","6c7567e2155f","REGROUPEMENT DE LA ZONE CENTRE DE MONTRÉAL"],"b24c7d93":["m15a","Stars de Yamaska-Missisquoi","e14e1c2c1652","REGROUPEMENT FÉMININ - YAMASKA"],"0bddeb68":["m15a","PIONNIÈRES 1 LANAUDIÈRE","cf093b042b08","AHM HOCKEY MINEUR FÉMININ LANAUDIÈRE"]},"built":"2026-11-18T20:32:37-05:00"};
+const TZ='America/Toronto';
+const LS={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{v==null?localStorage.removeItem(k):localStorage.setItem(k,v)}catch(e){}}};
+let LANG=(new URLSearchParams(location.search).get('lang')||'').replace(/[^a-z]/g,'')||LS.get('lqhf-lang')||(/^en/i.test(navigator.language||'')?'en':'fr');
+if(LANG!=='en')LANG='fr';
+const ordFr=n=>n===1?'1re':n+'e',ordEn=n=>n+((n%100>10&&n%100<14)?'th':({1:'st',2:'nd',3:'rd'}[n%10]||'th'));
+const STR={
+fr:{title:'Saison LQHF',eyebrow:s=>`Ligue québécoise de hockey féminin · ${s}`,overview:'Aperçu',standings:'Classement',schedule:'Calendrier',leaders:'Meneuses',goalies:'Gardiennes',power:'Puissance',
+ myTeam:'Mon équipe',findTeam:'Trouver une équipe',searchPh:'Nom d’équipe ou association…',divisions:'Divisions',gamesPlayed:(a,b)=>`${a} matchs joués sur ${b}`,teamsN:n=>`${n} équipes`,
+ live:'En cours',today:'Aujourd’hui',upcoming:'À venir',results:'Résultats',recent:'Résultats récents',next:'Prochains matchs',all:'Tous',nextGame:'Prochain match',lastGame:'Dernier match',
+ st:{scheduled:'Prévu',played:'Final',postponed:'Reporté',cancelled:'Annulé',live:'En cours'},comp:{L:'Ligue',T:'Tournoi',X:'Hors concours'},compShort:{L:'Ligue',T:'Tournoi',X:'H.C.'},
+ c:{gp:'MJ',w:'V',l:'D',t:'N',pts:'PTS',gf:'BP',ga:'BC',diff:'DIF',pim:'PUN',form:'5 derniers',streak:'Séq.',g:'B',a:'A',no:'#',pos:'Pos',player:'Joueuse',team:'Équipe',gaa:'Moy.',so:'BL',dressed:'Habillée',ppg:'Pts/MJ',rec:'Fiche',sector:'Secteur'},
+ R:{W:'V',L:'D',T:'N'},overall:'Général',byPool:'Par secteur',
+ standNote:'Classement officiel publié par la LQHF (les points LQHF ne comptent pas seulement les victoires et les nulles). Forme, séquence et minutes de punition sont calculées à partir des feuilles de match.',
+ rating:'Cote',sos:'Calibre adv.',powerNote:'Cote = écart de buts par match attendu contre une équipe moyenne de la division, calculé sur tous les matchs de saison régulière (régression ridge, écarts plafonnés à 6). « Calibre adv. » = cote moyenne des adversaires affrontés. Tôt en saison, l’incertitude est grande.',
+ odds:'Probabilités',tie:'Nulle',expected:'Score attendu',allPools:'Tous les secteurs',allTeams:'Toutes les équipes',allComps:'Toutes compétitions',more:n=>`Afficher ${n} de plus`,noGames:'Aucun match.',
+ seasonStats:'Saison régulière',allGames:'Tous les matchs',roster:'Joueuses',affiliates:'Joueuses affiliées',
+ affNote:'Règlement 5.7.1 F/G (Hockey Québec, féminin) : une joueuse affiliée peut jouer au plus 10 matchs de saison régulière au total, toutes équipes confondues (une joueuse : 2 équipes; une gardienne : 3). 5.7.1 B : au plus 6 affiliées par match. Compté d’après les alignements publiés; une gardienne affiliée habillée qui ne joue pas n’est pas créditée (5.7.1 D), ce que les alignements ne montrent pas.',
+ homeTeam:'Équipe d’origine',withTeam:'Avec cette équipe',total:'Total / 10',h2h:'Face-à-face',opp:'Adversaire',byPeriod:'Buts par période',for:'Pour',against:'Contre',home:'Domicile',away:'Visiteur',
+ discipline:'Discipline',pimpg:'Min. de punition par match',topInf:'Infractions les plus fréquentes',goals:'Buts',penalties:'Punitions',lineups:'Alignements',noSheet:'Pas encore de feuille de match.',
+ lqhf:'Voir sur lqhf.ca',map:'Itinéraire',per:p=>({1:'1re période',2:'2e période',3:'3e période',OT:'Prolongation',SO:'Tirs de barrage'}[p]||p),perS:p=>({OT:'Prol.',SO:'TB'}[p]||p),
+ pred:'Prédiction',predNote:'Modèle simple : cotes de puissance (saison régulière) et loi de Poisson. Tôt en saison, à prendre avec un grain de sel.',
+ follow:'☆ Suivre',following:'★ Mon équipe',asOf:d=>`Données LQHF/Spordle du ${d}.`,unofficial:'Site non officiel, sans lien avec la LQHF ni Hockey Québec. Les données officielles sont sur lqhf.ca.',
+ loading:'Chargement…',loadErr:'Impossible de charger les données.',gameLog:'Matchs joués',ord:ordFr,rankIn:(n,p)=>`${ordFr(n)} ${p}`,
+ goalieNote:'MJ, fiche, BC, moyenne et blanchissages : seulement les matchs où elle était la seule gardienne inscrite de son équipe. « Habillée » compte tous les matchs où elle figure dans l’alignement.',
+ leadersNote:'Saison régulière, d’après les feuilles de match publiées. MJ = matchs où la joueuse figure dans l’alignement.',minGp:n=>`Min. ${n} MJ`,
+ sectorLeaders:'Têtes de secteur',topScorers:'Meilleures pointeuses',topPower:'Plus fortes selon la cote',noTeam:'Aucune équipe trouvée.',
+ thisSeason:'Cette saison entre ces deux équipes',tourns:'Tournois',calendar:'Calendrier',players:'Joueuses',analysis:'Analyse',
+ pickTeam:'Choisissez votre équipe pour voir en un coup d’œil son prochain match, ses résultats et son classement.',seeTeam:'Voir l’équipe',
+ vs:'c.',at:'@',arena:'Aréna',number:n=>`Match nº ${n}`,affCount:n=>`${n} affiliée${n>1?'s':''} dans l’alignement`,
+ strW:n=>`${n} V`,strL:n=>`${n} D`,strT:n=>`${n} N`,refresh:'Mise à jour automatique pendant les matchs en cours.',splits:'Fiche par situation',last5:'5 derniers',
+ colon:' :',note0:'Aucune donnée pour l’instant.',scorers:'Pointeuses',team:'Équipe',gp1:'MJ seule',onlyG:'',pctile:'',season:'Saison',league:'Ligue',tourn:'Tournoi',exh:'Hors concours',stats:'Statistiques',noRoster:'Pas d’alignement publié.'},
+en:{title:'LQHF Season',eyebrow:s=>`Quebec Women’s Hockey League · ${s}`,overview:'Overview',standings:'Standings',schedule:'Schedule',leaders:'Leaders',goalies:'Goalies',power:'Power',
+ myTeam:'My team',findTeam:'Find a team',searchPh:'Team or association name…',divisions:'Divisions',gamesPlayed:(a,b)=>`${a} of ${b} games played`,teamsN:n=>`${n} teams`,
+ live:'Live',today:'Today',upcoming:'Upcoming',results:'Results',recent:'Recent results',next:'Next games',all:'All',nextGame:'Next game',lastGame:'Last game',
+ st:{scheduled:'Scheduled',played:'Final',postponed:'Postponed',cancelled:'Cancelled',live:'Live'},comp:{L:'League',T:'Tournament',X:'Exhibition'},compShort:{L:'League',T:'Tourn.',X:'Exh.'},
+ c:{gp:'GP',w:'W',l:'L',t:'T',pts:'PTS',gf:'GF',ga:'GA',diff:'DIFF',pim:'PIM',form:'Last 5',streak:'Strk',g:'G',a:'A',no:'#',pos:'Pos',player:'Player',team:'Team',gaa:'GAA',so:'SO',dressed:'Dressed',ppg:'Pts/GP',rec:'Record',sector:'Sector'},
+ R:{W:'W',L:'L',T:'T'},overall:'Overall',byPool:'By sector',
+ standNote:'Official standings as published by the LQHF (LQHF points count more than wins and ties). Form, streak and penalty minutes are computed from the scoresheets.',
+ rating:'Rating',sos:'Opp. strength',powerNote:'Rating = expected goal difference per game against an average team of the division, from all regular-season games (ridge regression, margins capped at 6). “Opp. strength” = average rating of the opponents faced. Early in the season the uncertainty is large.',
+ odds:'Odds',tie:'Tie',expected:'Expected score',allPools:'All sectors',allTeams:'All teams',allComps:'All competitions',more:n=>`Show ${n} more`,noGames:'No games.',
+ seasonStats:'Regular season',allGames:'All games',roster:'Players',affiliates:'Affiliated players',
+ affNote:'Rule 5.7.1 F/G (Hockey Québec, female): an affiliated player may play at most 10 regular-season games in total, all teams together (a skater: 2 teams; a goalie: 3). 5.7.1 B: at most 6 affiliates per game. Counted from the published lineups; an affiliated goalie dressed but not playing is not credited (5.7.1 D), which lineups do not show.',
+ homeTeam:'Home team',withTeam:'With this team',total:'Total / 10',h2h:'Head to head',opp:'Opponent',byPeriod:'Goals by period',for:'For',against:'Against',home:'Home',away:'Away',
+ discipline:'Discipline',pimpg:'Penalty minutes per game',topInf:'Most common infractions',goals:'Goals',penalties:'Penalties',lineups:'Lineups',noSheet:'No scoresheet yet.',
+ lqhf:'View on lqhf.ca',map:'Directions',per:p=>({1:'1st period',2:'2nd period',3:'3rd period',OT:'Overtime',SO:'Shootout'}[p]||p),perS:p=>({OT:'OT',SO:'SO'}[p]||p),
+ pred:'Prediction',predNote:'Simple model: power ratings (regular season) and a Poisson distribution. Early in the season, take it with a grain of salt.',
+ follow:'☆ Follow',following:'★ My team',asOf:d=>`LQHF/Spordle data as of ${d}.`,unofficial:'Unofficial site, not affiliated with the LQHF or Hockey Québec. Official data is on lqhf.ca.',
+ loading:'Loading…',loadErr:'Could not load the data.',gameLog:'Game log',ord:ordEn,rankIn:(n,p)=>`${ordEn(n)} in ${p}`,
+ goalieNote:'GP, record, GA, GAA and shutouts: only games where she was her team’s only goalie listed. “Dressed” counts every game she is in the lineup.',
+ leadersNote:'Regular season, from the published scoresheets. GP = games in which the player is in the lineup.',minGp:n=>`Min. ${n} GP`,
+ sectorLeaders:'Sector leaders',topScorers:'Top scorers',topPower:'Strongest by rating',noTeam:'No team found.',
+ thisSeason:'This season between these two teams',tourns:'Tournaments',calendar:'Schedule',players:'Players',analysis:'Analysis',
+ pickTeam:'Pick your team to see its next game, results and standing at a glance.',seeTeam:'See the team',
+ vs:'vs',at:'@',arena:'Arena',number:n=>`Game #${n}`,affCount:n=>`${n} affiliate${n>1?'s':''} in the lineup`,
+ strW:n=>`W${n}`,strL:n=>`L${n}`,strT:n=>`T${n}`,refresh:'Updates automatically while games are live.',splits:'Splits',last5:'Last 5',
+ colon:':',note0:'No data yet.',scorers:'Scorers',team:'Team',gp1:'GP alone',onlyG:'',pctile:'',season:'Season',league:'League',tourn:'Tournament',exh:'Exhibition',stats:'Stats',noRoster:'No lineup published.'}};
+const t=(k,...a)=>{const v=STR[LANG][k]??STR.fr[k];return typeof v==='function'?v(...a):v??k};
+const INF={'Tripping':'Faire trébucher','Hooking':'Accrocher','Body checking':'Mise en échec','Roughing':'Rudesse','Interference':'Obstruction','Slashing':'Cingler','Cross checking':'Double-échec',
+ 'Too many players on the ice':'Trop de joueuses sur la glace','Head contact':'Contact à la tête','Holding':'Retenir','Boarding':'Mise en échec contre la bande','Delay of game':'Retarder le match',
+ 'Charging':'Charger','Elbowing':'Coup de coude','Kneeing':'Coup de genou','High sticking':'Bâton élevé','Spearing':'Darder','Butt-ending':'Six pouces','Checking from behind':'Mise en échec par derrière',
+ 'Unsportsmanlike conduct':'Conduite antisportive','Misconduct':'Inconduite','Fighting':'Bagarre','Holding the stick':'Retenir le bâton','Kicking':'Donner un coup de pied','Diving':'Plonger'};
+const inf=s=>LANG==='fr'?(INF[s]||s):s;
+
+/* ---------- helpers ---------- */
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const DTF={};const fmt=(iso,o,loc)=>{const k=JSON.stringify([o,loc||LANG]);return (DTF[k]??=new Intl.DateTimeFormat(loc||(LANG==='fr'?'fr-CA':'en-CA'),{timeZone:TZ,...o})).format(new Date(iso))};
+const dayKey=iso=>fmt(iso,{year:'numeric',month:'2-digit',day:'2-digit'},'en-CA');
+const hm=iso=>fmt(iso,{hour:'2-digit',minute:'2-digit',hourCycle:'h23'},'en-GB');
+const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
+const dLong=iso=>cap(fmt(iso,{weekday:'long',day:'numeric',month:'long'}));
+const dShort=iso=>fmt(iso,{weekday:'short',day:'numeric',month:'short'}).replace(/\./g,'');
+const dTiny=iso=>fmt(iso,{day:'numeric',month:'short'}).replace(/\./g,'');
+const TODAY=()=>dayKey(new Date().toISOString());
+const signed=(x,n=2)=>(x>0?'+':x<0?'−':'')+Math.abs(x).toFixed(n);
+const pct=x=>Math.round(x*100)+'%';
+const short=s=>String(s||'').replace(/\s*-\s*M1\d\b.*$/i,'').trim();
+const sector=p=>String(p||'').split(' - ').pop();
+const conf=p=>{const a=String(p||'').split(' - ');return a.length>1?a[0]:''};
+const isG=pos=>/^G/.test(pos||'');
+
+/* ---------- data ---------- */
+const DATA={};
+const lmeta=k=>IX.leagues.find(l=>l.key===k);
+async function getL(k,fresh){
+  if(DATA[k]&&!fresh)return DATA[k];
+  const r=await fetch(`data/${k}.json?v=${fresh?Date.now():lmeta(k).v}`,fresh?{cache:'no-store'}:{});
+  if(!r.ok)throw new Error(r.status);
+  return DATA[k]=prep(await r.json());
+}
+function prep(d){
+  const now=Date.now();
+  d.byId={};d.mine=new Set(d.standings.map(s=>s.t));Object.keys(d.ratings).forEach(k=>d.mine.add(k));
+  d.stand={};d.standings.forEach(s=>d.stand[s.t]=s);
+  d.rmap={};for(const[k,rows]of Object.entries(d.roster))d.rmap[k]=Object.fromEntries(rows.map(r=>[r[0],r]));
+  for(const g of d.games){
+    d.byId[g.id]=g;g.t0=+new Date(g.s);g.t1=+new Date(g.e);
+    /* Spordle marks a game 'played' 0-0 as soon as it starts: live while g.live is set, or played without an end time inside its time slot. */
+    g.on=!!g.live||(g.st==='played'&&!g.end&&now>=g.t0&&now<g.t1);
+    if(g.on&&!g.sc)g.sc=[0,0];
+    g.done=g.st==='played'&&!g.on&&!!g.sc;
+  }
+  return d;
+}
+const tm=(d,k)=>d.teams[k]||IX.teams[k]&&{n:IX.teams[k][1],lg:IX.teams[k][2]}||{n:'?'};
+const tn=(d,k)=>short(tm(d,k).n);
+const tLeague=(d,k)=>d.league[k]||(IX.teams[k]&&IX.teams[k][0]);
+const teamHref=(d,k)=>{const l=tLeague(d,k);return l?`#/${l}/team/${k}`:''};
+function logo(d,k,sz=24){const m=tm(d,k);return m.lg?`<img class="lg" src="logos/${m.lg}.png" width="${sz}" height="${sz}" alt="" loading="lazy">`:`<span class="lg ph" style="width:${sz}px;height:${sz}px">${esc((m.n||'?').replace(/[^A-Za-zÀ-ÿ]/g,'').slice(0,2))}</span>`}
+function tlink(d,k,sz=22,full){const h=teamHref(d,k),n=esc(full?tm(d,k).n:tn(d,k));return h?`<a class="tl" href="${h}">${logo(d,k,sz)}<span>${n}</span></a>`:`<span class="tl">${logo(d,k,sz)}<span>${n}</span></span>`}
+const pname=(d,pk)=>d.players[pk]||'?';
+const plink=(d,pk)=>pk?`<a href="#/${d.key}/player/${pk}">${esc(pname(d,pk))}</a>`:'?';
+const res=(g,k)=>{const[a,b]=g.h===k?g.sc:[g.sc[1],g.sc[0]];return a>b?'W':a<b?'L':'T'};
+const compLab=(d,g,shortL)=>g.k==='T'?(d.tourn[g.tn]?d.tourn[g.tn].n:t('tourn')):t(shortL?'compShort':'comp')[g.k];
+const mapUrl=a=>`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent([a.n,a.ad,a.c].filter(Boolean).join(', '))}`;
+const lqhfUrl=g=>g.sp?`https://www.lqhf.ca/${LANG==='en'?'en':'fr'}/schedule/${g.sp}`:'';
+const FAV=()=>LS.get('lqhf-fav');
+
+function pois(m){const p=[Math.exp(-m)];for(let i=1;i<=15;i++)p.push(p[i-1]*m/i);return p}
+function odds(d,h,v){
+  const a=d.ratings[h],b=d.ratings[v];if(!a||!b)return null;
+  const diff=a.r-b.r,mh=Math.max(.3,d.base+diff/2),mv=Math.max(.3,d.base-diff/2),ph=pois(mh),pv=pois(mv);
+  let w=0,ti=0,l=0;for(let i=0;i<=15;i++)for(let j=0;j<=15;j++){const p=ph[i]*pv[j];if(i>j)w+=p;else if(i<j)l+=p;else ti+=p}
+  const s=w+ti+l;return{w:w/s,t:ti/s,l:l/s,eh:mh,ev:mv};
+}
+function oddsHTML(d,h,v){const o=odds(d,h,v);if(!o)return '';
+  return `<div class="odds" role="img" aria-label="${esc(tn(d,h))} ${pct(o.w)}, ${t('tie')} ${pct(o.t)}, ${esc(tn(d,v))} ${pct(o.l)}"><div class="ob"><i class="oh" style="width:${o.w*100}%"></i><i class="ot" style="width:${o.t*100}%"></i><i class="ov" style="width:${o.l*100}%"></i></div>
+  <div class="ol"><span><b>${pct(o.w)}</b> ${esc(tn(d,h))}</span><span>${t('tie')} <b>${pct(o.t)}</b></span><span><b>${pct(o.l)}</b> ${esc(tn(d,v))}</span></div></div>`}
+
+/* Team summary over league games. */
+function TI(d,k){
+  d._ti??={};if(d._ti[k])return d._ti[k];
+  const now=Date.now(),all=d.games.filter(g=>g.h===k||g.v===k),lg=all.filter(g=>g.k==='L'&&g.done);
+  const R=lg.map(g=>res(g,k));let sk=0;for(let i=R.length-1;i>=0&&R[i]===R[R.length-1];i--)sk++;
+  const per={f:{},a:{}},split={h:[0,0,0],v:[0,0,0]},infc={};let pim=0;
+  for(const g of lg){
+    for(const x of g.g||[]){const p=String(x[1]);(x[0]===k?per.f:per.a)[p]=((x[0]===k?per.f:per.a)[p]||0)+1}
+    for(const x of g.p||[])if(x[0]===k){pim+=x[5]||0;infc[x[4]]=(infc[x[4]]||0)+1}
+    const r=res(g,k);split[g.h===k?'h':'v']['WLT'.indexOf(r)]++;
+  }
+  return d._ti[k]={all,lg,form:R.slice(-5),streak:R.length?[R[R.length-1],sk]:null,pim,per,split,infc,
+    live:all.find(g=>g.on),next:all.find(g=>!g.done&&!g.on&&g.st==='scheduled'&&g.t1>now),last:[...all].reverse().find(g=>g.done)};
+}
+const formHTML=f=>`<span class="form">${f.map(r=>`<i class="${r}">${t('R')[r]}</i>`).join('')}</span>`;
+const streakTxt=s=>s?t('str'+s[0],s[1]):'';
+
+/* Player stats per (player, team) pair. scope 'L' = regular season, 'A' = every game. */
+function PS(d,scope){
+  d._ps??={};if(d._ps[scope])return d._ps[scope];
+  const M=new Map(),get=(pk,tk)=>{const k=pk+'|'+tk;let r=M.get(k);if(!r)M.set(k,r={pk,tk,gp:0,g:0,a:0,pim:0,no:null,pos:''});return r};
+  for(const g of d.games){
+    if(!(g.done||g.on)||(scope==='L'&&g.k!=='L'))continue;
+    for(const[tk,no,pk,pos]of g.lu||[]){if(!pk)continue;const r=get(pk,tk);r.gp++;if(no!=null)r.no=no;if(pos)r.pos=pos}
+    for(const[tk,,,s,...as]of g.g||[]){if(s)get(s,tk).g++;as.forEach(a=>a&&get(a,tk).a++)}
+    for(const[tk,,,pl,,min]of g.p||[])if(pl)get(pl,tk).pim+=min||0;
+  }
+  const out=[...M.values()];
+  for(const r of out){r.pts=r.g+r.a;const ro=d.rmap[r.tk]&&d.rmap[r.tk][r.pk];if(ro){if(ro[1]!=null)r.no=ro[1];r.pos=r.pos||ro[2];r.aff=!!ro[3]}}
+  return d._ps[scope]=out;
+}
+function GS(d){
+  if(d._gs)return d._gs;const M=new Map(),get=(pk,tk)=>{const k=pk+'|'+tk;let r=M.get(k);if(!r)M.set(k,r={pk,tk,dr:0,gp:0,w:0,l:0,t:0,ga:0,so:0,no:null});return r};
+  for(const g of d.games){
+    if(!g.done||g.k!=='L'||!g.lu)continue;
+    for(const[tk,gf,ga]of[[g.h,g.sc[0],g.sc[1]],[g.v,g.sc[1],g.sc[0]]]){
+      const gs=g.lu.filter(x=>x[0]===tk&&isG(x[3])&&x[2]);gs.forEach(x=>{const r=get(x[2],tk);r.dr++;if(x[1]!=null)r.no=x[1]});
+      if(gs.length===1){const r=get(gs[0][2],tk);r.gp++;r.ga+=ga;r.so+=ga===0?1:0;r[gf>ga?'w':gf<ga?'l':'t']++}
+    }
+  }
+  return d._gs=[...M.values()].map(r=>({...r,gaa:r.gp?r.ga/r.gp:null}));
+}
+
+/* ---------- UI state, routing ---------- */
+const UIS={};let CUR={};
+const U=()=>UIS[CUR.lk||'_']??={};
+function parse(){const raw=location.hash.replace(/^#\/?/,'');const p=raw.split('/').filter(Boolean).map(decodeURIComponent);
+  return{raw,lk:p[0]||'',view:p[1]||'',arg:p[2]||'',arg2:p[3]||''}}
+const app=document.getElementById('app');
+const LIM=40;
+
+function chrome(r){
+  document.documentElement.lang=LANG;
+  document.getElementById('lang').textContent=LANG==='fr'?'EN':'FR';
+  document.getElementById('lang').setAttribute('aria-label',LANG==='fr'?'English':'Français');
+  document.getElementById('eyebrow').textContent=t('eyebrow',IX.season);
+  const L=lmeta(r.lk);
+  document.getElementById('title').textContent=L?`${L.label} · ${t('season')} ${IX.season}`:t('title')+' '+IX.season;
+  document.title=(L?L.label+' · ':'')+t('title');
+  document.getElementById('pills').innerHTML=IX.leagues.map(l=>`<a href="#/${l.key}"${l.key===r.lk?' aria-current="page"':''}>${esc(l.label)}</a>`).join('');
+  const tabs=[['',t('overview')],['standings',t('standings')],['schedule',t('schedule')],['leaders',t('leaders')],['goalies',t('goalies')],['power',t('power')]];
+  const nav=document.getElementById('tabs');nav.hidden=!L;
+  if(L)document.getElementById('tabsw').innerHTML=tabs.map(([v,n])=>`<a href="#/${r.lk}${v?'/'+v:''}"${r.view===v?' aria-current="page"':''}>${n}</a>`).join('');
+  const b=new Date(IX.built);
+  document.getElementById('foot').innerHTML=`<p>${t('asOf',fmt(IX.built,{dateStyle:'long',timeStyle:'short'}))} <a href="https://www.lqhf.ca/${LANG}" rel="noopener">lqhf.ca</a></p><p>${t('unofficial')}</p>`;
+}
+
+let timer=null;
+async function render(scroll){
+  const r=parse();CUR=r;chrome(r);
+  if(scroll){window.scrollTo(0,0)}
+  try{
+    let html;
+    if(!r.lk)html=await vHome();
+    else{
+      if(!lmeta(r.lk)){location.replace('#/');return}
+      LS.set('lqhf-league',r.lk);
+      if(!DATA[r.lk])app.innerHTML=`<p class="muted">${t('loading')}</p>`;
+      const d=await getL(r.lk);
+      if(r.view==='player')await Promise.all(IX.leagues.map(l=>getL(l.key)));
+      const V={'':vOverview,standings:vStand,schedule:vSched,leaders:vLeaders,goalies:vGoalies,power:vPower,team:vTeam,game:vGame,player:vPlayer}[r.view]||vOverview;
+      html=V(d,r.arg,r.arg2);
+      if(d.games.some(g=>g.on)&&!timer)timer=setTimeout(async()=>{timer=null;try{await getL(r.lk,true);if(parse().lk===r.lk)render()}catch(e){}},120000);
+    }
+    if(parse().raw!==r.raw)return;
+    app.innerHTML=html;
+  }catch(e){console.error(e);app.innerHTML=`<p class="err">${t('loadErr')}</p>`}
+}
+window.addEventListener('hashchange',()=>render(true));
+document.getElementById('lang').addEventListener('click',()=>{LANG=LANG==='fr'?'en':'fr';LS.set('lqhf-lang',LANG);render()});
+app.addEventListener('change',e=>{const k=e.target.dataset.ui;if(k){U()[k]=e.target.value;U().lim=0;render()}});
+app.addEventListener('click',e=>{const b=e.target.closest('[data-act]');if(!b)return;const a=b.dataset.act,v=b.dataset.v,u=U();
+  if(a==='sort'){u.sort=v;render()}
+  else if(a==='more'){u.lim=(u.lim||LIM)+LIM;render()}
+  else if(a==='fav'){LS.set('lqhf-fav',FAV()===v?null:v);render()}
+  else if(a==='set'){u[b.dataset.k]=v;u.lim=0;render()}});
+app.addEventListener('input',e=>{if(e.target.id==='q'){UIS._q=e.target.value;document.getElementById('qres').innerHTML=searchRes(UIS._q)}});
+
+/* ---------- shared pieces ---------- */
+function gRow(d,g,o={}){
+  const side=w=>{const k=g[w];return k?`<span class="tl">${logo(d,k,22)}<span>${esc(tn(d,k))}</span></span>`:`<span class="tl"><span>${esc(g[w+'p']||'?')}</span></span>`};
+  const sc=(g.done||g.on)&&g.sc,hw=sc&&g.sc[0]>g.sc[1],vw=sc&&g.sc[1]>g.sc[0];
+  let chip;
+  if(g.on)chip=`<span class="chip live">${t('live')}</span>`;
+  else if(g.done&&o.team&&(g.h===o.team||g.v===o.team)){const r=res(g,o.team);chip=`<span class="chip ${r}">${t('R')[r]}</span>`}
+  else if(g.done)chip=`<span class="chip final">${t('st').played}</span>`;
+  else if(g.st==='postponed'||g.st==='cancelled')chip=`<span class="chip off">${t('st')[g.st]}</span>`;
+  else chip=g.k==='L'?'':`<span class="chip ${g.k==='T'?'T_':'X'}">${t('compShort')[g.k]}</span>`;
+  const meCls=k=>k&&(k===o.team||k===FAV())?' me':'';
+  const sub=o.date?dTiny(g.s):(g.k==='T'?t('compShort').T:g.k==='X'?t('compShort').X:'');
+  return `<li><a class="gr" href="#/${d.key}/game/${g.id}"><div class="tm">${hm(g.s)}<small>${esc(sub)}</small></div>
+  <div class="sides"><div class="${g.h?'':'ph'}${meCls(g.h)}">${side('h')}${sc?`<span class="sc ${hw?'w':''}">${g.sc[0]}</span>`:''}</div><div class="${g.v?'':'ph'}${meCls(g.v)}">${side('v')}${sc?`<span class="sc ${vw?'w':''}">${g.sc[1]}</span>`:''}</div></div>${chip||'<span></span>'}</a></li>`;
+}
+function gList(d,games,o={}){
+  if(!games.length)return `<div class="card empty">${t('noGames')}</div>`;
+  if(o.flat)return `<ul class="gl card">${games.map(g=>gRow(d,g,{...o,date:true})).join('')}</ul>`;
+  let out='',cur=null,buf=[];
+  const flush=()=>{if(buf.length)out+=`<div class="day">${dLong(buf[0].s)}${dayKey(buf[0].s)===TODAY()?' · '+t('today'):''}</div><ul class="gl card">${buf.map(g=>gRow(d,g,o)).join('')}</ul>`;buf=[]};
+  for(const g of games){const k=dayKey(g.s);if(k!==cur){flush();cur=k}buf.push(g)}flush();return out;
+}
+const moreBtn=(n,lim)=>n>lim?`<button class="btn more" data-act="more">${t('more',Math.min(LIM,n-lim))}</button>`:'';
+const teamOpts=(d,sel)=>[...d.mine].sort((a,b)=>tn(d,a).localeCompare(tn(d,b),'fr')).map(k=>`<option value="${k}"${k===sel?' selected':''}>${esc(tn(d,k))}</option>`).join('');
+const sortTh=(key,lab,cur,title)=>`<th><button data-act="sort" data-v="${key}" aria-pressed="${cur===key}"${title?` title="${esc(title)}"`:''}>${lab}</button></th>`;
+
+/* ---------- home ---------- */
+function searchRes(q){
+  const n=s=>String(s||'').normalize('NFD').replace(/[̀-ͯ]/g,'').toLowerCase();
+  const qq=n(q).trim();if(!qq)return '';
+  const hits=Object.entries(IX.teams).filter(([k,v])=>n(v[1]+' '+v[3]).includes(qq)).sort((a,b)=>a[1][1].localeCompare(b[1][1],'fr')).slice(0,30);
+  if(!hits.length)return `<p class="empty">${t('noTeam')}</p>`;
+  return `<div class="res card">${hits.map(([k,v])=>`<a href="#/${v[0]}/team/${k}">${v[2]?`<img class="lg" src="logos/${v[2]}.png" width="24" height="24" alt="" loading="lazy">`:''}<span>${esc(short(v[1]))}</span><small>${esc(lmeta(v[0]).label)}<br>${esc(v[3])}</small></a>`).join('')}</div>`;
+}
+async function vHome(){
+  const fav=FAV(),fl=fav&&IX.teams[fav];let favHTML='';
+  if(fl){const d=await getL(fl[0]);favHTML=`<h2 class="first">${t('myTeam')}</h2>${teamCard(d,fav)}`}
+  const cards=IX.leagues.map(l=>`<a class="card lc" href="#/${l.key}"><b>${esc(l.label)}</b><span>${t('teamsN',l.teams)} · ${t('gamesPlayed',l.played,l.total)}</span><div class="prog"><i style="width:${l.total?l.played/l.total*100:0}%"></i></div></a>`).join('');
+  return `${favHTML}<h2${fav?'':' class="first"'}>${t('findTeam')}</h2>${fav?'':`<p class="muted">${t('pickTeam')}</p>`}
+  <input id="q" type="search" placeholder="${t('searchPh')}" value="${esc(UIS._q||'')}" autocomplete="off" aria-label="${t('findTeam')}"><div id="qres" style="margin-top:8px">${searchRes(UIS._q||'')}</div>
+  <h2>${t('divisions')}</h2><div class="grid3">${cards}</div>`;
+}
+function teamCard(d,k){
+  const I=TI(d,k),s=d.stand[k];
+  const g1=I.live||I.next,g0=I.last;
+  return `<div class="card pad"><div class="th">${logo(d,k,56)}<div style="flex:1;min-width:0"><a href="${teamHref(d,k)}" style="font:800 italic 24px/1.05 var(--display);text-transform:uppercase;color:inherit;text-decoration:none">${esc(tn(d,k))}</a>
+   <div class="muted">${esc(d.label)}${s?` · ${t('rankIn',s.prk,sector(s.pool))} · ${s.w}-${s.l}-${s.ti} · ${s.pts} ${t('c').pts}`:''}</div></div>${I.form.length?formHTML(I.form):''}</div>
+   <div class="grid2" style="margin-top:14px">${g1?`<div><h3>${I.live?t('live'):t('nextGame')}</h3><ul class="gl card">${gRow(d,g1,{team:k,date:true})}</ul></div>`:''}${g0?`<div><h3>${t('lastGame')}</h3><ul class="gl card">${gRow(d,g0,{team:k,date:true})}</ul></div>`:''}</div></div>`;
+}
+
+/* ---------- league overview ---------- */
+function vOverview(d){
+  const now=Date.now(),fav=FAV();
+  const live=d.games.filter(g=>g.on);
+  const up=d.games.filter(g=>!g.done&&!g.on&&g.st==='scheduled'&&g.t0>now).slice(0,10);
+  const rec=d.games.filter(g=>g.done).sort((a,b)=>b.t0-a.t0).slice(0,10);
+  const lead=d.pools.map(p=>{const rows=d.standings.filter(s=>s.pool===p).sort((a,b)=>a.prk-b.prk).slice(0,3);
+    return `<tr><td class="l" colspan="3" style="background:var(--soft)"><b>${esc(sector(p))}</b> <small class="muted">${esc(conf(p))}</small></td></tr>${rows.map(s=>`<tr${s.t===fav?' class="me"':''}><td class="rk">${s.prk}</td><td class="l tn">${tlink(d,s.t)}</td><td class="pts">${s.pts}</td></tr>`).join('')}`}).join('');
+  const sc=PS(d,'L').filter(r=>d.mine.has(r.tk)).sort((a,b)=>b.pts-a.pts||b.g-a.g||a.gp-b.gp).slice(0,8);
+  const pw=Object.entries(d.ratings).filter(([,v])=>v.n).sort((a,b)=>b[1].r-a[1].r).slice(0,8);
+  const fl=fav&&d.mine.has(fav)?teamCard(d,fav):'';
+  return `${fl?`<h2 class="first">${t('myTeam')}</h2>${fl}`:''}
+  ${live.length?`<h2${fl?'':' class="first"'}>${t('live')}</h2>${gList(d,live,{flat:true})}`:''}
+  <div class="grid2" style="margin-top:${fl||live.length?'0':'0'}">
+   <div><h2${fl||live.length?'':' class="first"'}>${t('next')}</h2>${gList(d,up)}<p class="note"><a href="#/${d.key}/schedule">${t('schedule')} →</a></p></div>
+   <div><h2${fl||live.length?'':' class="first"'}>${t('recent')}</h2>${gList(d,rec)}</div></div>
+  <div class="grid2"><div><h2>${t('sectorLeaders')}</h2><div class="card scroll"><table><tbody>${lead}</tbody></table></div><p class="note"><a href="#/${d.key}/standings">${t('standings')} →</a></p></div>
+   <div><h2>${t('topScorers')}</h2><div class="card scroll"><table><thead><tr><th class="l">${t('c').player}</th><th>${t('c').gp}</th><th>${t('c').g}</th><th>${t('c').a}</th><th>${t('c').pts}</th></tr></thead><tbody>${sc.map(r=>`<tr${r.tk===fav?' class="me"':''}><td class="l">${plink(d,r.pk)}<br><small class="muted">${esc(tn(d,r.tk))}</small></td><td>${r.gp}</td><td>${r.g}</td><td>${r.a}</td><td class="pts">${r.pts}</td></tr>`).join('')}</tbody></table></div><p class="note"><a href="#/${d.key}/leaders">${t('leaders')} →</a></p>
+   <h2>${t('topPower')}</h2><div class="card scroll"><table><tbody>${pw.map(([k,v],i)=>`<tr${k===fav?' class="me"':''}><td class="rk">${i+1}</td><td class="l tn">${tlink(d,k)}</td><td><b>${signed(v.r)}</b></td></tr>`).join('')}</tbody></table></div><p class="note"><a href="#/${d.key}/power">${t('power')} →</a></p></div></div>`;
+}
+
+/* ---------- standings ---------- */
+function vStand(d){
+  const u=U(),mode=u.sv||'pool',fav=FAV(),c=t('c');
+  const row=(s,rk)=>{const I=TI(d,s.t),df=s.gf-s.ga;return `<tr${s.t===fav?' class="me"':''}><td class="rk">${rk}</td><td class="l tn">${tlink(d,s.t)}</td>${mode==='all'?`<td class="l"><small class="muted">${esc(sector(s.pool))}</small></td>`:''}<td>${s.gp}</td><td>${s.w}</td><td>${s.l}</td><td>${s.ti}</td><td class="pts">${s.pts}</td><td>${s.gf}</td><td>${s.ga}</td><td>${signed(df,0)}</td><td>${I.pim}</td><td class="l">${formHTML(I.form)}</td><td class="l">${streakTxt(I.streak)}</td></tr>`};
+  const head=`<thead><tr><th>#</th><th class="l">${c.team}</th>${mode==='all'?`<th class="l">${c.sector}</th>`:''}<th>${c.gp}</th><th>${c.w}</th><th>${c.l}</th><th>${c.t}</th><th>${c.pts}</th><th>${c.gf}</th><th>${c.ga}</th><th>${c.diff}</th><th>${c.pim}</th><th class="l">${c.form}</th><th class="l">${c.streak}</th></tr></thead>`;
+  let body;
+  if(mode==='all')body=`<div class="card scroll"><table>${head}<tbody>${[...d.standings].sort((a,b)=>a.rk-b.rk).map(s=>row(s,s.rk)).join('')}</tbody></table></div>`;
+  else body=d.pools.map(p=>`<h2>${esc(sector(p))} <small>${esc(conf(p))}</small></h2><div class="card scroll"><table>${head}<tbody>${d.standings.filter(s=>s.pool===p).sort((a,b)=>a.prk-b.prk).map(s=>row(s,s.prk)).join('')}</tbody></table></div>`).join('');
+  return `<div class="filters"><div class="seg" role="group"><button data-act="set" data-k="sv" data-v="pool" aria-pressed="${mode==='pool'}">${t('byPool')}</button><button data-act="set" data-k="sv" data-v="all" aria-pressed="${mode==='all'}">${t('overall')}</button></div></div>${body.replace('<h2>','<h2 class="first">')}<p class="note">${t('standNote')}</p>`;
+}
+
+/* ---------- schedule ---------- */
+function vSched(d){
+  const u=U(),when=u.when||'up',team=u.team||'',comp=u.comp||'',lim=u.lim||LIM,today=TODAY();
+  let gs=d.games.filter(g=>(!team||g.h===team||g.v===team)&&(!comp||g.k===comp));
+  if(when==='up')gs=gs.filter(g=>g.on||(!g.done&&dayKey(g.s)>=today));
+  else if(when==='res')gs=gs.filter(g=>!g.on&&(g.done||dayKey(g.s)<today)).sort((a,b)=>b.t0-a.t0);
+  const n=gs.length;
+  return `<div class="filters"><div class="seg" role="group">${[['up',t('upcoming')],['res',t('results')],['all',t('all')]].map(([v,l])=>`<button data-act="set" data-k="when" data-v="${v}" aria-pressed="${when===v}">${l}</button>`).join('')}</div>
+  <select data-ui="team" aria-label="${t('c').team}"><option value="">${t('allTeams')}</option>${teamOpts(d,team)}</select>
+  <select data-ui="comp" aria-label="${t('allComps')}"><option value="">${t('allComps')}</option>${['L','T','X'].map(k=>`<option value="${k}"${comp===k?' selected':''}>${t('comp')[k]}</option>`).join('')}</select></div>
+  ${gList(d,gs.slice(0,lim),{team})}${moreBtn(n,lim)}`;
+}
+
+/* ---------- leaders ---------- */
+function playerTable(d,rows,o={}){
+  const c=t('c'),s=o.sort||'pts',fav=FAV();
+  return `<div class="card scroll"><table><thead><tr>${o.rank?'<th>#</th>':''}<th class="l">${c.player}</th>${o.team?`<th class="l">${c.team}</th>`:''}<th>${c.no}</th><th class="l">${c.pos}</th>${sortTh('gp',c.gp,s)}${sortTh('g',c.g,s)}${sortTh('a',c.a,s)}${sortTh('pts',c.pts,s)}${sortTh('ppg',c.ppg,s)}${sortTh('pim',c.pim,s)}</tr></thead>
+  <tbody>${rows.map((r,i)=>`<tr${o.team&&r.tk===fav?' class="me"':''}>${o.rank?`<td class="rk">${i+1}</td>`:''}<td class="l">${plink(d,r.pk)}${r.aff?`<span class="aff">AFF</span>`:''}</td>${o.team?`<td class="l tn">${tlink(d,r.tk,18)}</td>`:''}<td>${r.no??''}</td><td class="l">${esc(r.pos||'')}</td><td>${r.gp}</td><td>${r.g}</td><td>${r.a}</td><td class="pts">${r.pts}</td><td>${r.gp?(r.pts/r.gp).toFixed(2):''}</td><td>${r.pim}</td></tr>`).join('')}</tbody></table></div>`;
+}
+const pSort=s=>(a,b)=>s==='ppg'?((b.gp?b.pts/b.gp:0)-(a.gp?a.pts/a.gp:0)||b.pts-a.pts):s==='gp'?b.gp-a.gp||b.pts-a.pts:(b[s]-a[s])||(b.pts-a.pts)||(b.g-a.g)||(a.gp-b.gp);
+function vLeaders(d){
+  const u=U(),s=u.sort||'pts',pool=u.pool||'',lim=u.lim||50;
+  let rows=PS(d,'L').filter(r=>d.mine.has(r.tk)&&(!pool||(d.stand[r.tk]&&d.stand[r.tk].pool===pool)));
+  if(s==='ppg')rows=rows.filter(r=>r.gp>=3);
+  rows.sort(pSort(s));
+  return `<div class="filters"><select data-ui="pool" aria-label="${t('c').sector}"><option value="">${t('allPools')}</option>${d.pools.map(p=>`<option value="${esc(p)}"${p===pool?' selected':''}>${esc(sector(p))} ${conf(p)?' ('+esc(conf(p))+')':''}</option>`).join('')}</select></div>
+  ${playerTable(d,rows.slice(0,lim),{team:1,rank:1,sort:s})}${moreBtn(rows.length,lim)}<p class="note">${t('leadersNote')}${s==='ppg'?' '+t('minGp',3)+'.':''}</p>`;
+}
+
+/* ---------- goalies ---------- */
+function goalieTable(d,rows,o={}){
+  const c=t('c'),s=o.sort||'gaa';
+  return `<div class="card scroll"><table><thead><tr><th class="l">${c.player}</th>${o.team?`<th class="l">${c.team}</th>`:''}<th>${c.no}</th>${sortTh('dr',c.dressed,s)}${sortTh('gp',t('gp1'),s)}<th>${c.w}-${c.l}-${c.t}</th>${sortTh('ga',c.ga,s)}${sortTh('gaa',c.gaa,s)}${sortTh('so',c.so,s)}</tr></thead>
+  <tbody>${rows.map(r=>{const ro=d.rmap[r.tk]&&d.rmap[r.tk][r.pk];return `<tr${o.team&&r.tk===FAV()?' class="me"':''}><td class="l">${plink(d,r.pk)}${ro&&ro[3]?'<span class="aff">AFF</span>':''}</td>${o.team?`<td class="l tn">${tlink(d,r.tk,18)}</td>`:''}<td>${(ro&&ro[1])??r.no??''}</td><td>${r.dr}</td><td>${r.gp}</td><td>${r.w}-${r.l}-${r.t}</td><td>${r.ga}</td><td>${r.gaa!=null?r.gaa.toFixed(2):''}</td><td>${r.so}</td></tr>`}).join('')}</tbody></table></div>`;
+}
+function vGoalies(d){
+  const u=U(),s=u.sort&&['dr','gp','ga','gaa','so'].includes(u.sort)?u.sort:'gaa',min=+(u.min||3),pool=u.pool||'';
+  let rows=GS(d).filter(r=>d.mine.has(r.tk)&&(!pool||(d.stand[r.tk]&&d.stand[r.tk].pool===pool)));
+  const q=rows.filter(r=>r.gp>=min),rest=rows.filter(r=>r.gp<min);
+  const f={gaa:(a,b)=>a.gaa-b.gaa||b.gp-a.gp,so:(a,b)=>b.so-a.so||a.gaa-b.gaa,ga:(a,b)=>a.ga-b.ga,gp:(a,b)=>b.gp-a.gp,dr:(a,b)=>b.dr-a.dr}[s];
+  q.sort(f);rest.sort((a,b)=>b.gp-a.gp||b.dr-a.dr);
+  return `<div class="filters"><select data-ui="pool" aria-label="${t('c').sector}"><option value="">${t('allPools')}</option>${d.pools.map(p=>`<option value="${esc(p)}"${p===pool?' selected':''}>${esc(sector(p))} ${conf(p)?' ('+esc(conf(p))+')':''}</option>`).join('')}</select>
+  <select data-ui="min" aria-label="min">${[1,2,3,4,5].map(n=>`<option value="${n}"${n===min?' selected':''}>${t('minGp',n)}</option>`).join('')}</select></div>
+  ${goalieTable(d,[...q,...rest],{team:1,sort:s})}<p class="note">${t('goalieNote')}</p>`;
+}
+
+/* ---------- power ---------- */
+function vPower(d){
+  const fav=FAV(),c=t('c'),now=Date.now();
+  const rows=Object.entries(d.ratings).sort((a,b)=>b[1].r-a[1].r);
+  const mx=Math.max(.5,...rows.map(([,v])=>Math.abs(v.r)));
+  const tbl=`<div class="card scroll"><table><thead><tr><th>#</th><th class="l">${c.team}</th><th class="l">${c.sector}</th><th>${c.gp}</th><th>${c.rec}</th><th>${c.pts}</th><th class="l">${t('rating')}</th><th>${t('sos')}</th></tr></thead><tbody>
+  ${rows.map(([k,v],i)=>{const s=d.stand[k]||{};const w=Math.abs(v.r)/mx*60;return `<tr${k===fav?' class="me"':''}><td class="rk">${i+1}</td><td class="l tn">${tlink(d,k)}</td><td class="l"><small class="muted">${esc(sector(s.pool))}${s.prk?' · '+t('ord',s.prk):''}</small></td><td>${v.n}</td><td>${s.w??0}-${s.l??0}-${s.ti??0}</td><td>${s.pts??''}</td><td class="l"><b class="num" style="display:inline-block;width:52px">${signed(v.r)}</b><span class="bar${v.r<0?' neg':''}" style="width:${w}px"></span></td><td>${v.sos!=null?signed(v.sos):''}</td></tr>`}).join('')}</tbody></table></div>`;
+  const up=d.games.filter(g=>g.k==='L'&&!g.done&&!g.on&&g.st==='scheduled'&&g.t0>now&&g.t0<now+8*864e5&&d.ratings[g.h]&&d.ratings[g.v]);
+  const nx=up.length?`<h2>${t('next')} <small>${t('odds')}</small></h2><div class="grid2">${up.map(g=>`<a class="card pad" href="#/${d.key}/game/${g.id}" style="color:inherit;text-decoration:none;display:block${g.h===fav||g.v===fav?';border-color:var(--sky)':''}"><div class="muted" style="font-size:13px;margin-bottom:8px">${dShort(g.s)} · ${hm(g.s)}</div>${oddsHTML(d,g.h,g.v)}</a>`).join('')}</div>`:'';
+  return `<h2 class="first">${t('power')}</h2>${tbl}<p class="note">${t('powerNote')}</p>${nx}`;
+}
+
+/* ---------- team ---------- */
+function vTeam(d,k,seg){
+  if(!d.mine.has(k)){const l=IX.teams[k];if(l&&l[0]!==d.key){location.replace(`#/${l[0]}/team/${k}`);return ''}return `<p class="err">?</p>`}
+  const I=TI(d,k),s=d.stand[k],rt=d.ratings[k],m=tm(d,k),fav=FAV()===k,c=t('c');seg=seg||'schedule';
+  const kp=[[s?`${s.w}-${s.l}-${s.ti}`:'—',c.rec],[s?s.pts:'—',c.pts],[s?t('ord',s.prk):'—',sector(s&&s.pool)],[s?t('ord',s.rk):'—',t('overall')],[s?signed(s.gf-s.ga,0):'—',c.diff],[rt&&rt.n?signed(rt.r):'—',t('rating')]];
+  const head=`<div class="th">${logo(d,k,72)}<div style="flex:1;min-width:0"><h2 class="first">${esc(m.n)}</h2><div class="muted">${esc(m.o||'')} · ${esc(d.label)}${s?' · '+esc(s.pool):''}</div></div>
+   <button class="btn${fav?' on':''}" data-act="fav" data-v="${k}" aria-pressed="${fav}">${fav?t('following'):t('follow')}</button></div>
+   <div class="kpis">${kp.map(([v,l])=>`<div class="kpi"><b>${esc(v)}</b><span>${esc(l)}</span></div>`).join('')}</div>
+   ${I.form.length?`<p style="margin:12px 0 0">${t('last5')} ${formHTML(I.form)} <span class="muted">· ${streakTxt(I.streak)}</span></p>`:''}
+   <div class="grid2" style="margin-top:16px">${(I.live||I.next)?`<div><h3>${I.live?t('live'):t('nextGame')}</h3><ul class="gl card">${gRow(d,I.live||I.next,{team:k,date:true})}</ul>${!I.live&&I.next.k==='L'?`<div class="card pad" style="margin-top:8px">${oddsHTML(d,I.next.h,I.next.v)}</div>`:''}</div>`:''}${I.last?`<div><h3>${t('lastGame')}</h3><ul class="gl card">${gRow(d,I.last,{team:k,date:true})}</ul></div>`:''}</div>`;
+  const segs=[['schedule',t('calendar')],['players',t('players')],['analysis',t('analysis')]];
+  const nav=`<div class="filters" style="margin-top:26px"><div class="seg">${segs.map(([v,l])=>`<a href="#/${d.key}/team/${k}/${v}" aria-current="${seg===v}">${l}</a>`).join('')}</div></div>`;
+  let body='';
+  if(seg==='schedule'){
+    const today=TODAY(),up=I.all.filter(g=>g.on||(!g.done&&dayKey(g.s)>=today)),past=I.all.filter(g=>!up.includes(g)).reverse();
+    const tns=[...new Set(I.all.filter(g=>g.k==='T').map(g=>g.tn))];
+    body=`${tns.length?`<p class="muted">${t('tourns')}${t('colon')} ${tns.map(i=>`<b>${esc(d.tourn[i].n)}</b> (${dTiny(d.tourn[i].from)}–${dTiny(d.tourn[i].to)})`).join(' · ')}</p>`:''}
+     <h2>${t('upcoming')} <small>${up.length}</small></h2>${gList(d,up,{team:k})}<h2>${t('results')} <small>${past.length}</small></h2>${gList(d,past,{team:k})}`;
+  }else if(seg==='players'){
+    const u=U(),sc=u.ps||'L',srt=u.sort||'pts';
+    const rows=PS(d,sc).filter(r=>r.tk===k);
+    const rost=(d.roster[k]||[]).filter(r=>!rows.some(x=>x.pk===r[0])&&!r[3]).map(r=>({pk:r[0],tk:k,gp:0,g:0,a:0,pts:0,pim:0,no:r[1],pos:r[2]}));
+    const all=[...rows,...rost].filter(r=>!isG(r.pos)).sort(pSort(srt));
+    const gl=GS(d).filter(r=>r.tk===k).sort((a,b)=>b.dr-a.dr);
+    const affs=(d.roster[k]||[]).filter(r=>r[3]).sort((a,b)=>b[6]-a[6]||b[5]-a[5]);
+    const affT=affs.length?`<h2>${t('affiliates')} <small>${affs.length}</small></h2><div class="card scroll"><table><thead><tr><th class="l">${c.player}</th><th class="l">${c.pos}</th><th class="l">${t('homeTeam')}</th><th>${t('withTeam')}</th><th>${t('total')}</th></tr></thead><tbody>
+      ${affs.map(r=>`<tr><td class="l">${plink(d,r[0])}</td><td class="l">${esc(r[2]||'')}</td><td class="l tn">${r[4]?tlink(d,r[4],18):'<span class="muted">—</span>'}</td><td>${r[5]}</td><td><b style="color:${r[6]>=10?'var(--loss)':r[6]>=8?'var(--warn)':'inherit'}">${r[6]}</b></td></tr>`).join('')}</tbody></table></div><p class="note">${t('affNote')}</p>`:'';
+    body=`<div class="filters"><div class="seg">${[['L',t('seasonStats')],['A',t('allGames')]].map(([v,l])=>`<button data-act="set" data-k="ps" data-v="${v}" aria-pressed="${sc===v}">${l}</button>`).join('')}</div></div>
+     ${playerTable(d,all,{sort:srt})}${gl.length?`<h2>${t('goalies')}</h2>${goalieTable(d,gl,{sort:'dr'})}<p class="note">${t('goalieNote')}</p>`:''}${affT}`;
+  }else{
+    const P=['1','2','3','OT'],pr=P.filter(p=>p<'4'||I.per.f[p]||I.per.a[p]);
+    const perT=`<div class="card scroll"><table><thead><tr><th class="l"></th>${pr.map(p=>`<th>${esc(t('perS',p))}</th>`).join('')}</tr></thead><tbody><tr><td class="l">${t('for')}</td>${pr.map(p=>`<td>${I.per.f[p]||0}</td>`).join('')}</tr><tr><td class="l">${t('against')}</td>${pr.map(p=>`<td>${I.per.a[p]||0}</td>`).join('')}</tr></tbody></table></div>`;
+    const sp=I.split,rec=a=>a.join('-');
+    const opp={};for(const g of I.all.filter(g=>g.done)){const o=g.h===k?g.v:g.h;if(!o)continue;const r=opp[o]??={W:0,L:0,T:0,gf:0,ga:0,n:0};const[a,b]=g.h===k?g.sc:[g.sc[1],g.sc[0]];r[res(g,k)]++;r.gf+=a;r.ga+=b;r.n++}
+    const h2h=Object.entries(opp).sort((a,b)=>b[1].n-a[1].n||tn(d,a[0]).localeCompare(tn(d,b[0])));
+    const infs=Object.entries(I.infc).sort((a,b)=>b[1]-a[1]).slice(0,6);
+    const pimRank=[...d.mine].map(x=>{const J=TI(d,x);return[x,J.lg.length?J.pim/J.lg.length:0]}).sort((a,b)=>a[1]-b[1]);
+    const myR=pimRank.findIndex(x=>x[0]===k)+1;
+    body=`<div class="grid2"><div><h2 class="first">${t('splits')}</h2><div class="card scroll"><table><thead><tr><th class="l"></th><th>${c.w}-${c.l}-${c.t}</th></tr></thead><tbody><tr><td class="l">${t('home')}</td><td>${rec(sp.h)}</td></tr><tr><td class="l">${t('away')}</td><td>${rec(sp.v)}</td></tr></tbody></table></div>
+      <h2>${t('byPeriod')} <small>${t('seasonStats')}</small></h2>${perT}</div>
+     <div><h2 class="first">${t('discipline')}</h2><div class="card pad"><div class="kpis" style="margin:0"><div class="kpi"><b>${I.pim}</b><span>${c.pim}</span></div><div class="kpi"><b>${I.lg.length?(I.pim/I.lg.length).toFixed(1):'—'}</b><span>${t('pimpg')}</span></div><div class="kpi"><b>${myR?t('ord',myR):'—'}/${pimRank.length}</b><span>${d.label}</span></div></div>
+      ${infs.length?`<h3 style="margin-top:14px">${t('topInf')}</h3><table><tbody>${infs.map(([n,v])=>`<tr><td class="l">${esc(inf(n))}</td><td>${v}</td></tr>`).join('')}</tbody></table>`:''}</div></div></div>
+     <h2>${t('h2h')}</h2><div class="card scroll"><table><thead><tr><th class="l">${t('opp')}</th><th>${c.gp}</th><th>${c.w}-${c.l}-${c.t}</th><th>${c.gf}</th><th>${c.ga}</th></tr></thead><tbody>${h2h.map(([o,r])=>`<tr><td class="l tn">${tlink(d,o,18)}</td><td>${r.n}</td><td>${r.W}-${r.L}-${r.T}</td><td>${r.gf}</td><td>${r.ga}</td></tr>`).join('')||`<tr><td class="l muted">${t('note0')}</td></tr>`}</tbody></table></div>`;
+  }
+  return head+nav+body;
+}
+
+/* ---------- game ---------- */
+function vGame(d,id){
+  const g=d.byId[id];if(!g)return `<p class="err">?</p>`;
+  const sc=(g.done||g.on)&&g.sc,a=d.arenas[g.a];
+  const side=w=>{const k=g[w];return k?`<div class="side">${teamHref(d,k)?`<a href="${teamHref(d,k)}">${logo(d,k,60)}</a>`:logo(d,k,60)}${teamHref(d,k)?`<a href="${teamHref(d,k)}">${esc(tn(d,k))}</a>`:esc(tn(d,k))}<small class="muted">${w==='h'?t('home'):t('away')}</small></div>`:`<div class="side"><span class="muted">${esc(g[w+'p']||'?')}</span></div>`};
+  const status=g.on?`<span class="chip live">${t('live')}${g.live&&g.live.period?' · '+esc(t('perS',String(g.live.period))):''}</span>`:g.done?`<span class="chip final">${t('st').played}</span>`:`<span class="chip${g.st!=='scheduled'?' off':''}">${t('st')[g.st]||g.st}</span>`;
+  const board=`<div class="card board"><div class="meta">${esc(compLab(d,g))} · ${t('number',g.n)}</div>
+   <div class="vs">${side('h')}<div><div class="big ${sc?'':'tbd'}">${sc?`${g.sc[0]} – ${g.sc[1]}`:t('vs')}</div><div style="margin-top:8px">${status}</div></div>${side('v')}</div>
+   <div class="facts"><span>${dLong(g.s)} · ${hm(g.s)}</span>${a?`<span>${esc(a.n)}${a.c?', '+esc(a.c):''} · <a href="${mapUrl(a)}" target="_blank" rel="noopener">${t('map')}</a></span>`:''}${g.sp?`<span><a href="${lqhfUrl(g)}" target="_blank" rel="noopener">${t('lqhf')}</a></span>`:''}</div></div>`;
+  const pred=!g.done&&!g.on&&g.h&&g.v&&d.ratings[g.h]&&d.ratings[g.v]?(()=>{const o=odds(d,g.h,g.v);return `<h2>${t('pred')}</h2><div class="card pad">${oddsHTML(d,g.h,g.v)}<p class="note" style="margin-top:10px">${t('expected')}${t('colon')} ${esc(tn(d,g.h))} ${o.eh.toFixed(1)} – ${o.ev.toFixed(1)} ${esc(tn(d,g.v))}. ${t('predNote')}</p></div>`})():'';
+  const no=(tk,pk)=>{const l=(g.lu||[]).find(x=>x[0]===tk&&x[2]===pk);const ro=d.rmap[tk]&&d.rmap[tk][pk];const n=l&&l[1]!=null?l[1]:ro&&ro[1];return n!=null?`<small class="muted">#${n}</small> `:''};
+  const isAff=(tk,pk)=>{const ro=d.rmap[tk]&&d.rmap[tk][pk];return !!(ro&&ro[3])};
+  const pers=[...new Set([...(g.g||[]),...(g.p||[])].map(x=>String(x[1])))].sort((a,b)=>(a==='OT'?4:a==='SO'?5:+a)-(b==='OT'?4:b==='SO'?5:+b));
+  let line='';
+  if(g.g&&g.g.length){const cnt=(tk,p)=>g.g.filter(x=>x[0]===tk&&String(x[1])===p).length;
+    line=`<div class="card scroll" style="margin-bottom:12px"><table><thead><tr><th class="l"></th>${pers.map(p=>`<th>${esc(t('perS',p))}</th>`).join('')}<th>T</th></tr></thead><tbody>${[g.h,g.v].map(tk=>`<tr><td class="l">${tlink(d,tk,18)}</td>${pers.map(p=>`<td>${cnt(tk,p)}</td>`).join('')}<td class="pts">${g.g.filter(x=>x[0]===tk).length}</td></tr>`).join('')}</tbody></table></div>`}
+  const evs=(arr,f)=>pers.map(p=>{const xs=arr.filter(x=>String(x[1])===p);return xs.length?`<li class="per">${esc(t('per',p))}</li>`+xs.map(f).join(''):''}).join('');
+  const goals=g.g&&g.g.length?`<h2>${t('goals')}</h2>${line}<ul class="ev card">${evs(g.g,x=>`<li><span class="tm">${esc(x[2]||'')}</span>${logo(d,x[0],22)}<span>${no(x[0],x[3])}<b>${plink(d,x[3])}</b>${x.slice(4).filter(Boolean).length?` <small>(${x.slice(4).filter(Boolean).map(p=>plink(d,p)).join(', ')})</small>`:''}</span></li>`)}</ul>`:'';
+  const pens=g.p&&g.p.length?`<h2>${t('penalties')}</h2><ul class="ev card">${evs(g.p,x=>`<li><span class="tm">${esc(x[2]||'')}</span>${logo(d,x[0],22)}<span>${no(x[0],x[3])}${plink(d,x[3])} <small>· ${esc(inf(x[4]))} · ${x[5]} min</small></span></li>`)}</ul>`:'';
+  const lus=g.lu&&g.lu.length?`<h2>${t('lineups')}</h2><div class="grid2">${[g.h,g.v].filter(Boolean).map(tk=>{const L=g.lu.filter(x=>x[0]===tk).sort((a,b)=>(isG(b[3])-isG(a[3]))||((a[1]??999)-(b[1]??999)));const na=L.filter(x=>isAff(tk,x[2])).length;
+     return `<div><h3>${tlink(d,tk,18)}</h3><div class="card scroll"><table><tbody>${L.map(x=>`<tr><td class="rk">${x[1]??''}</td><td class="l">${plink(d,x[2])}${isAff(tk,x[2])?'<span class="aff">AFF</span>':''}</td><td class="l muted">${esc(x[3]||'')}</td></tr>`).join('')||`<tr><td class="l muted">${t('noRoster')}</td></tr>`}</tbody></table></div>${na?`<p class="note">${t('affCount',na)}</p>`:''}</div>`}).join('')}</div>`:'';
+  const h2h=g.h&&g.v?d.games.filter(x=>x!==g&&((x.h===g.h&&x.v===g.v)||(x.h===g.v&&x.v===g.h))):[];
+  const sheet=!goals&&!pens&&!lus&&(g.done||g.on)?`<p class="note">${t('noSheet')}${g.sp?` <a href="${lqhfUrl(g)}" target="_blank" rel="noopener">${t('lqhf')}</a>`:''}</p>`:'';
+  return `<div class="crumb"><a href="#/${d.key}/schedule">← ${t('schedule')}</a></div>${board}${pred}${sheet}${goals}${pens}${lus}${h2h.length?`<h2>${t('thisSeason')}</h2>${gList(d,h2h,{flat:true})}`:''}`;
+}
+
+/* ---------- player (every league, since affiliates play across divisions) ---------- */
+function vPlayer(d,pk){
+  const seen=new Set(),log=[];let name='';
+  for(const L of IX.leagues.map(l=>DATA[l.key]).filter(Boolean)){
+    if(L.players[pk])name=L.players[pk];
+    for(const g of L.games){
+      if(seen.has(g.id)||!(g.done||g.on))continue;
+      const lu=(g.lu||[]).find(x=>x[2]===pk),gl=(g.g||[]).filter(x=>x[3]===pk),as=(g.g||[]).filter(x=>x.slice(4).includes(pk)),pe=(g.p||[]).filter(x=>x[3]===pk);
+      if(!lu&&!gl.length&&!as.length&&!pe.length)continue;
+      seen.add(g.id);
+      const tk=lu?lu[0]:gl[0]?gl[0][0]:as[0]?as[0][0]:pe[0][0];
+      log.push({L,g,tk,no:lu&&lu[1],pos:lu&&lu[3],G:gl.length,A:as.length,PIM:pe.reduce((s,x)=>s+(x[5]||0),0)});
+    }
+  }
+  log.sort((a,b)=>b.g.t0-a.g.t0);
+  const teams=[];for(const L of IX.leagues.map(l=>DATA[l.key]).filter(Boolean))for(const[k,rows]of Object.entries(L.roster)){const r=rows.find(x=>x[0]===pk);if(r)teams.push({L,k,r})}
+  const c=t('c');
+  const tot={};for(const x of log){const key=x.tk+'|'+x.g.k;const r=tot[key]??={L:x.L,tk:x.tk,k:x.g.k,gp:0,g:0,a:0,pim:0};r.gp++;r.g+=x.G;r.a+=x.A;r.pim+=x.PIM}
+  const affR=teams.find(x=>x.r[3]);
+  return `<div class="crumb"><a href="javascript:history.back()">←</a></div><h2 class="first">${esc(name||'?')}</h2>
+  <div class="grid3">${teams.map(x=>`<div class="card pad">${tlink(x.L,x.k,28)}<div class="muted" style="margin-top:6px">${esc(x.L.label)}${x.r[1]!=null?' · #'+x.r[1]:''}${x.r[2]?' · '+esc(x.r[2]):''}${x.r[3]?' <span class="aff">AFF</span>':''}</div></div>`).join('')}</div>
+  ${affR?`<p class="note">${t('affiliates')}${t('colon')} ${t('total')} = <b>${affR.r[6]}</b>. ${t('affNote')}</p>`:''}
+  <h2>${t('stats')}</h2><div class="card scroll"><table><thead><tr><th class="l">${c.team}</th><th class="l"></th><th>${c.gp}</th><th>${c.g}</th><th>${c.a}</th><th>${c.pts}</th><th>${c.pim}</th></tr></thead><tbody>
+   ${Object.values(tot).sort((a,b)=>'LTX'.indexOf(a.k)-'LTX'.indexOf(b.k)).map(r=>`<tr><td class="l tn">${tlink(r.L,r.tk,18)}</td><td class="l muted">${t('comp')[r.k]}</td><td>${r.gp}</td><td>${r.g}</td><td>${r.a}</td><td class="pts">${r.g+r.a}</td><td>${r.pim}</td></tr>`).join('')||`<tr><td class="l muted">${t('note0')}</td></tr>`}</tbody></table></div>
+  <h2>${t('gameLog')} <small>${log.length}</small></h2><div class="card scroll"><table><thead><tr><th class="l"></th><th class="l"></th><th class="l">${t('opp')}</th><th></th><th>${c.g}</th><th>${c.a}</th><th>${c.pim}</th></tr></thead><tbody>
+   ${log.map(x=>{const g=x.g,o=g.h===x.tk?g.v:g.h,r=g.done?res(g,x.tk):'';const[a,b]=g.h===x.tk?g.sc:[g.sc[1],g.sc[0]];
+     return `<tr><td class="l"><a href="#/${x.L.key}/game/${g.id}">${dTiny(g.s)}</a></td><td class="l"><small class="muted">${esc(compLab(x.L,g,1))}</small></td><td class="l tn">${g.h===x.tk?'':t('at')+' '}${o?tlink(x.L,o,18):''}${x.tk!==log[0].tk||teams.length>1?` <small class="muted">(${esc(tn(x.L,x.tk))})</small>`:''}</td><td>${r?`<span class="chip ${r}">${t('R')[r]} ${a}-${b}</span>`:`<span class="chip live">${a}-${b}</span>`}</td><td>${x.G}</td><td>${x.A}</td><td>${x.PIM}</td></tr>`}).join('')}</tbody></table></div>`;
+}
+
+render();
+</script>
+</body>
+</html>
